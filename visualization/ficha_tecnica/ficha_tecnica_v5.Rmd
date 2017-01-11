@@ -9,6 +9,7 @@ output:
     includes:
       in_header: styles/paquetes.sty
     keep_tex: yes
+bibliography: styles/articulos.bib
 ---
 
 ```{r setup, include=FALSE}
@@ -233,6 +234,7 @@ print(pred_tabla,
 [comparación]: ficha_figs/comprobacion_modelo_35.png
 
 
+# Bibliografía
 
 
 

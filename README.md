@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Índice IMCO-OPI
 IMCO y OPI desarollaron un índice que mida la actividad económica de las zonas metropolitanas en México. 
 
@@ -8,3 +9,6 @@ Para más información se puede consultar la documentación que se encuentra en 
 Este repositorio es la manifestacin de la cuarta característica -participación-.
 En este repositorio se hace disponible al público general el código y los datos que se utilizaron para la elaboración del índice. 
 
+=======
+# indice-de-actividad-economica
+>>>>>>> fb80c1fa57b8bbe36dd160818721b0de52abef34

@@ -15,8 +15,8 @@ metros_ref <- read_csv("zonas_metro_estado_ok.csv" %>%
     file.path("../data/referencias", .)) %>% 
     select(CVEMET, zona_metro = nombre_corto, CVEMUN, CVEENT)
 
-
-muns_ae <- read_csv("../data/resultados/integrado/por_municipio.csv") %>%
+muns_ae <- read_csv("por_municipio.csv" %>% 
+    file.path("../data/resultados/integrado", .)) %>%
   select(trimestre, CVEMUN, acteco) %>% 
   filter(CVEMUN %in% metros_ref$CVEMUN)
   
@@ -29,6 +29,8 @@ pibe <- read_csv("../data/bie/processed/pibe.csv") %>%
   rename(trimestre = año)
 itaee <- read_csv("../data/bie/processed/itaee.csv") %>% 
   select(trimestre = fecha, Estado, CVEENT, itaee = original)
+  
+
 
 estado_ae <- read_csv("../data/resultados/integrado/por_estado.csv") %>% 
   select(trimestre, Estado, CVEENT, acteco)
@@ -70,7 +72,32 @@ ggsave(plot = gg_sanity, "../visualization/comprobación_modelo_35.png",
   width = 16, height = 9, dpi = 100)
 
 
+data_met <- read_csv("../data/conapo/conapo_municipio.csv") %>% 
+  select(CVEMUN = cvegeo, fecha, total) %>% 
+  filter(fecha <= "2016-01-01") %>% 
+  mutate(trimestre = fecha %>% ymd %>% add(months(11))) %>% 
+  right_join(metros_ref %>% select(-CVEENT), by = "CVEMUN") %>% 
+  group_by(CVEMET, zona_metro, trimestre) %>% 
+  summarize(poblacion = sum(total, na.rm=T)) %>% ungroup %>% 
+  mutate(CVEMET = str_pad(CVEMET, 3, "left", "0")) %>% 
+  inner_join(metros_ae, by=c("trimestre", "CVEMET", "zona_metro")) %>% 
+  group_by(CVEMET, zona_metro) %>% arrange(trimestre) %>% 
+  mutate(acteco_crec = acteco/lag(acteco) - 1, 
+      acteco_percap  = acteco/poblacion)
 
+gg_acteco_vars <- data_met %>% 
+  filter(trimestre == "2015-12-01") %>% 
+  ggplot(aes(acteco_percap, acteco_crec, color = zona_metro)) + 
+    geom_point() +
+    # geom_text_repel(aes(label = zona_metro)) + 
+    scale_color_manual(values = brewer.pal(8, "Dark2") %>% rep(10)) +
+    theme(legend.position = "none")
+
+print(gg_acteco_vars)
+
+ggsave(plot = gg_acteco_vars, 
+  "../visualization/figures/acteco_transform_.png", 
+  width = 16, height = 9, dpi = 100)
 
 
 
