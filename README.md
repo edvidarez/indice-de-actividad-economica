@@ -1,6 +1,6 @@
 
 # Índice MAGDA
-La Medición de Actividad con Grandes Datos es desarrollada mediante el trabajo conjunto de [IMCO](www.imco.org.mx) y OPI(www.opi.la). 
+La Medición de Actividad con Grandes Datos es desarrollada mediante el trabajo conjunto de [IMCO](www.imco.org.mx) y [OPI](www.opi.la). 
 
 Las características principales de este índice son desagregación, frecuencia, accesibilidad, participación.
 Para más información se puede consultar la [documetación](visualization/ficha_tecnica/ficha_tecnica.pdf) en la carpeta de `visualization`.  
