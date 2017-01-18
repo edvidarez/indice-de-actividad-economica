@@ -61,13 +61,17 @@ Los datos de la NOAA se procesan aparte en QGIS.
     - viirs_175 suma con datos_localidades
     - columna de salida: _175.
     
+    
 # Referencia
 
 Los datos de referencia se pueden descargar de: 
 aws s3 cp --recursive s3://opi-data-science/play/imco/referencias/ ../data/referencias/
 
 
-# Algunos paquetes se cargan automáticamente al abrir el proyecto-R. 
+# Configuración
+Se utiliza el software QGIS y R con RStudio. 
+
+Algunos paquetes se cargan automáticamente al abrir el proyecto-R. 
 Verificar la instalación previa de stringr, data.table, lubridate, 
 readr, dtplyr, tidyr, ggplot2, dplyr, magrittr. 
 
