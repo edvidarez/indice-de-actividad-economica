@@ -7,7 +7,3 @@ Para más información se puede consultar la documentación que se encuentra en 
 
 Este repositorio es la manifestacin de la quinta característica -participación-.
 En este repositorio se hace disponible al público general el código y los datos que se utilizaron para la elaboración del índice. 
-
-=======
-# Índice MAGDA
->>>>>>> fb80c1fa57b8bbe36dd160818721b0de52abef34
