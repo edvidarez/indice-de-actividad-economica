@@ -53,53 +53,60 @@ datos_shape <- function (shape, nivel = "municipio") {  #
 
 # 1. Leer Shapefiles
 
-edos_shp <- readOGR("../data/inegi/marco_geo/processed", 
-  "datos_estados",     stringsAsFactors = FALSE)
-muns_shp <- readOGR("../data/inegi/marco_geo/processed", 
-  "datos_municipios",  stringsAsFactors = FALSE)
 locs_shp <- readOGR("../data/inegi/marco_geo/processed", 
   "datos_localidades", stringsAsFactors = FALSE)
 
+# Los shapefiles de municipios y estados no son necesarios para el
+# análisis.  Para correrlos, hay que antes cargarlos en QGIS como se 
+# hizo con las localidades. 
+# muns_shp <- readOGR("../data/inegi/marco_geo/processed", 
+#   "datos_municipios",  stringsAsFactors = FALSE)
+# edos_shp <- readOGR("../data/inegi/marco_geo/processed", 
+#   "datos_estados",     stringsAsFactors = FALSE)
+
 
 # 2. Sacar Datos
-
-edos_data <- datos_shape(edos_shp, "estado") %>% 
-  rename(CVEENT = CVEGEO) %>% 
-  select(CVEENT, nombre, LUMEN = luz_sum, area, x175)
-
-muns_data <- datos_shape(muns_shp, "municipio") %>% 
-  rename(CVEMUN = CVEGEO) %>% 
-  select(CVEMUN, nombre, LUMEN = luz_sum, area, x175)
 
 locs_data <- datos_shape(locs_shp, "localidad") %>% 
   rename(CVELOC = CVEGEO) %>% 
   select(CVELOC, nombre, LUMEN = luz_sum, area, x175) 
 
+# Descomentar, 
+# edos_data <- datos_shape(edos_shp, "estado") %>% 
+#   rename(CVEENT = CVEGEO) %>% 
+#   select(CVEENT, nombre, LUMEN = luz_sum, area, x175)
+# 
+# muns_data <- datos_shape(muns_shp, "municipio") %>% 
+#   rename(CVEMUN = CVEGEO) %>% 
+#   select(CVEMUN, nombre, LUMEN = luz_sum, area, x175)
+
+
+
 
 # 3. Juntar datos. 
 
-municipios_datos <- muns_data %>% 
-  left_join(by = "CVEMUN", locs_data %>% 
-    mutate(CVEMUN = str_sub(CVELOC, 1, 5)) %>% 
-    group_by(CVEMUN) %>% 
-    summarize_at(vars(LUMEN, area, x175), funs(loc = sum))
-  ) 
-    
-estados_datos <- edos_data %>% 
-  left_join(by = "CVEENT", locs_data %>% 
-    mutate(CVEENT = str_sub(CVELOC, 1, 2)) %>% 
-    group_by(CVEENT) %>% 
-    summarize_at(vars(LUMEN, area, x175), funs(loc = sum))
-  )
+# municipios_datos <- muns_data %>% 
+#   left_join(by = "CVEMUN", locs_data %>% 
+#     mutate(CVEMUN = str_sub(CVELOC, 1, 5)) %>% 
+#     group_by(CVEMUN) %>% 
+#     summarize_at(vars(LUMEN, area, x175), funs(loc = sum))
+#   ) 
+#     
+# estados_datos <- edos_data %>% 
+#   left_join(by = "CVEENT", locs_data %>% 
+#     mutate(CVEENT = str_sub(CVELOC, 1, 2)) %>% 
+#     group_by(CVEENT) %>% 
+#     summarize_at(vars(LUMEN, area, x175), funs(loc = sum))
+#   )
 
 
 # 4. Escribir tablas
 
 write_csv(locs_data, "../data/viirs/processed_tables/locs_luces_175.csv")
 
-write_csv(municipios_datos, "../data/viirs/processed_tables/mun_luces_175.csv")
-
-write_csv(estados_datos, "../data/viirs/processed_tables/edos_luces_175.csv")
+# write_csv(municipios_datos, "../data/viirs/processed_tables/mun_luces_175.csv")
+# 
+# write_csv(estados_datos, "../data/viirs/processed_tables/edos_luces_175.csv")
 
 
 
