@@ -1,0 +1,324 @@
+---
+title: "Medición de la Actividad Económica a partir de Grandes Datos (MAGDA)"
+author: IMCO y OPI ^[El Instituto Mexicano para la Competitividad (IMCO) es una
+  asociación civil que propone políticas públicas y acciones viables e influir en
+  su ejecución para lograr un México próspero e incluyente (www.imco.org.mx).
+    OPI es una empresa líder de mercado en la investigación de grandes
+  datos (www.opi.la).]
+date: "CDMX a 12 de enero de 17"
+output:
+  pdf_document:
+    fig_caption: yes
+    highlight: zenburn
+    includes:
+      in_header: styles/paquetes.sty
+    keep_tex: yes
+  html_document: default
+
+bibliography: styles/articulos.bib
+
+nocite: |
+  @petriocioli_15, @elvidge_13, @ghosh_10, @jean_16, @henderson_12, 
+  @chen_11, @inegi_13, @gonzalez_14
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+library(broom)
+library(xtable)
+library(zoo)
+opts_chunk$set(echo = FALSE)
+options(scipen=0, digits=3)
+options(OutDec=".")
+options(xtable.comment = FALSE, xtable.table.placement="H")
+```
+
+# Objetivo
+
+El propósito de este proyecto es generar una medición de los niveles y el crecimiento de la actividad económica en las zonas metropolitanas y que tenga las siguientes características:
+
++ _Uso de grandes datos._ La actividad económica produce bases de datos vivas y grandes (_big data_) que pueden aprovecharse para estimar la actividad económica. 
++ _Desagregación._  Más allá de los estados, MAGDA se enfocará en evaluar las ciudades y zonas metropolitanas más importantes del país. 
++ _Frecuencia._  MAGDA utilizará datos con frecuencia trimestral, por lo que podrá ser publicado oportunamente. 
++ _Accesibilidad._  Los insumos no dependen de las cuentas nacionales.  Se utilizarán datos transaccionales y satelitales en la elaboración, que están disponibles para el público. 
++ _Participación._  Además de publicarse regularmente, MAGDA hace uso de tecnologías y metodologías modernas, para ser accesible al público en general.  En un repositorio de control de versiones[^github], se harán accesibles las fuentes de los datos así como el código utilizado para procesarlo, de principio a fin.  Los usuarios interesados podrán replicar el proceso, hacer modificaciones para uso propio, o incluso proponer ajustes a la metodología. 
+
+ 
+[^github]: www.github.com
+
+# Descripción de los datos
+
+Se utilizaron datos que corresponden a tres variables principales: producto o actividad económica (Producto Interno Bruto Estatal --PIBE-- e Indicador Trimestral de la Actividad Económica Estatal --ITAEE--), mediciones de luminosidad nocturna (fuente abierta) y transacciones en cajeros automáticos de la Comisión Nacional Bancaria y de Valores --CNBV--. Los primeros, PIBE e ITAEE, son generados por el INEGI para las entidades federativas y constituyen la guía de calibración de datos para MAGDA.  Se relaciona el PIBE y el ITAEE con las variables de luminosidad y CNBV, que se calculan para las entidades federativas y las nuevas desagregaciones.
+
+A continuación se describen las bases de agregación que se utilizan en el proceso de modelado de MAGDA. 
+
+## Agregación sociopolítica
+
+Se utilizan cuatro niveles de agregación $\mathcal{L},\, \mathcal{M},\, \mathcal{C},\, \mathcal{E}$ que corresponden a localidades urbanas, municipios, ciudades o áreas metropolitanas y estados.  
+
+La forma en que se utiliza cada nivel es la siguiente: 
+
++ _Estados:_ los índices existentes más usados se publican a nivel estatal y nacional.  A medida que generamos un nuevo índice, hay que compararlo con los indicadores existentes para validarlo, y éso se hizo con la agregación a nivel estatal. 
+
++ _Ciudades, o zonas metropolitanas:_  MAGDA tiene como objetivo describir la actividad económica en las ciudades, que son el núcleo del crecimiento del pais.  Es posible obtener datos de los niveles correspondientes, ya sea agregándolos o heredándolos.  Por ejemplo, los niveles de luminosidad o de área se obtienen a nivel municipal, y después se suman para tener los niveles de las ciudades.  Por otro lado, siguiendo las mediciones oficiales para los estados, se hacen modelos que relacionan los comportamientos del PIBE y de luminosidad, mismos que se heredan a las ciudades correspondientes.  
+
++ _Municipios:_  los municipios constituyen la división administrativa básica en este proyecto que cubre el territorio nacional.  Tanto los datos de luminosidad como los de la CNBV se pueden obtener en este nivel de agregación.  
+
++ _Localidades urbanas:_ si los municipios constituyen la base de MAGDA, se utilizan estas localidades para definir el _soporte_ del mismo.  Específicamente para las mediciones de luminosidad que se explican más adelante, ésto implica fijar cada uno de los anteriores estados, zonas metropolitanas, municipios a sus correspondientes localidades, donde se concentra la mayoría de la luminosidad y de su actividad económica.
+
+Se utilizó el Marco Geoestadístico Nacional (INEGI, 2014) para identificar las regiones correspondientes.  A partir de los municipios se agregan tanto en ciudades como en estados para obtener las variables en cada nivel.  La agregación de municipios en ciudades sigue la metodología que usa IMCO para su Índice de Competitividad Urbana[^imco_icu]. 
+
+[^imco_icu]: http://imco.org.mx/competitividad/indice-de-competitividad-urbana-2016/
+
+
+## Producto y actividad económica
+
+El PIBE es el Producto Interno Bruto por Entidad Federativa; es el indicador oficial de actividad económica de los estados y se publica anualmente por el INEGI.  En diferentes periodos que duran alrededor de una década, el PIBE conlleva distintas metodologías que incorporan reglamentación novedosa del momento.  El periodo más reciente, de 2008 a 2014, sigue los lineamientos del Sistema de Clasificación Industrial de América del Norte.  Se puede obtener más información en el sitio web del [INEGI][PIBE].
+
+Sin embargo el cálculo del PIBE conlleva un tiempo de rezago que incluye la recaudación de las cuentas de las diferentes secretarías y la revisión de las metodologías con estándares internacionales.  Para una publicación más reciente y frecuente se cuenta con el Índice Trimestral de Actividad Económica Estatal, ITAEE.  La serie de este índice se extiende desde 2003 hasta 2016 y tiene periodicidad trimestral, como su nombre lo indica.  De acuerdo a la documentación del ITAEE debe considerarse como un adelanto del PIBE pues incorpora parte de la metodología correspondiente, aunque no coincide del todo con los cálculos anuales debido principalmente a la calendarización de la actividad primaria[^calendarización].  
+
+Se utilizan los datos del PIBE en un periodo de fijo en $t_0 = 2014$ y que se denota como $\pi_{e,t_0}$ para cada estado $e \in \mathcal E$.  Las series del ITAEE se escribe como $\iota_{e,t}$ donde $t \in \mathcal T$ se extiende desde 2011 a 2016. 
+De acuerdo a estos índices se estimaran los niveles y crecimientos de los estados que después se extiende a las zonas metropolitanas $c \in \mathcal C$.
+
+[PIBE]: http://www.inegi.org.mx/est/contenidos/proyectos/scn/c_anuales/pib_ef/presentacion.aspx
+[^calendarización]: Fuente: http://www.inegi.org.mx/est/contenidos/proyectos/scn/c_anuales/pib_ef/presentacion.aspx
+
+
+
+## Luminosidad nocturna
+
+Para medir la luminosidad nocturna se usaron imágenes del sitio de la Administración Americana Oceánica y Atmosférica de los Estados Unidos ([NOAA][NOAA] por sus siglas en inglés).  Los archivos tienen fotos satelitales del globo terráqueo e información específica para seleccionar el territorio de interés de la República Mexicana.  Las imágenes fueron sometidas previamente a procesos en los cuales se limpian de efectos que distorsionan la información. Por ejemplo, la presencia de nubes en alguna región obstruye la luz cuando se toma la foto satelital y la haría parecer menos luminosa. Los archivos comprenden periodos de un mes, de donde se puede distinguir cuáles de las zonas fueron distorsionadas por nubes y remover dicho efecto.  
+
+![Foto satelital][Mex_VIIRS]
+
+Las fotos que se utilizaron son generadas con tecnología reciente que se llama _Suite de Radiometría de Imágenes Visibles Infrarrojas_, VIIRS.  Estas imágenes tienen una resolución de $\text{0.55 km}^2$ y usan unidades de radiación $\ell \sim \frac{\text{Watt}}{\text{cm}^2 \text{sr}}$, es decir potencia entre área esférica.  Estas mediciones las llamamos _luminosidad_ y denotamos como $\ell$, $\lambda$ o $\Lambda$, dependiendo del nivel y agregación. 
+
+Estas fuentes satelitales proporcionan mediciones geográficas $x_i,\, y_i$ y de luminosidad $\ell_i$ que se indexan con $i \in \mathcal{I}$; las mediciones corresponden a los pixeles de la cuadrícula o ráster.  Relacionándolo con las regiones $R \in \mathcal{M},\, \mathcal{C},\, \mathcal{E}$ se tiene que el área correspondiente es proporcional al número de pixeles contenidos en ellas
+$$ \mathrm{A}(R) \propto \sum\limits_{i \in \mathcal{I}} \chi_R(x_i,y_i).$$  
+
+De forma similar se calculan la luminosidad total y media de las regiones como 
+$$ \Lambda(R) = \sum\limits_{i \in \mathcal{I}} \ell_i \chi_R(x_i,y_i) \qquad y
+      \qquad \lambda(R) = \frac{\Lambda(R)}{\mathrm{A}(R)}, $$ 
+donde $\chi_R(x_i,y_i)$ es la indicadora de cada pixel $i$ en cada región $R$ de acuerdo a sus coordenadas $(x_i, y_i)$.  
+
+Mas aún dado que MAGDA medirá la actividad económica en las zonas metropolitanas, se considera la luminosidad urbana como la restricción de las luminosidades a las localidades urbanas.  Tómese $U = \bigcup_\mathcal{L}L$ como la unión de todas las localidades urbanas, y se indice mediante el superíndice $(\,\cdot\,)^U$  las restricciones correspondientes
+$$ \mathrm{A}^U(R) = \mathrm{A}(R \cap U), \qquad 
+      \Lambda^U(R) = \Lambda(R \cap U), \qquad 
+      \lambda^U(R) = \lambda(R \cap U). $$
+
+La restricción se hizo con software especializado de geolocalización[^georef] utilizando archivos con formato específico para cartografía digital (_shapefiles_).  Dichos _shapefiles_ provienen del Marco Geoestadístico Nacional.
+
+Finalmente se impone una segunda restricción a las zonas urbanas por considerar.  Esta restricción consiste en limitar $U$ a las zonas en donde el valor de $\ell \leq 175\,\frac{\text{Watt}}{\text{cm}^2 \text{sr}}$.  El motivo de ésto es que se encontraron regiones de pocos pixeles con luminosidades sumamente altas en el orden de millares, cuyas zonas se sabe que no tienen tanta actividad económica.  Específicamente, las zonas se identificaron en sitios de actividad petrolera, y la luminosidad se asocia a la combustión de los procesos implicados.  El tope de 175 se toma relativo al máximo de la Zona del Valle de México. 
+
+Manteniendo la notación simple, se redefine la zona urbana $U$ como libre de combustión donde solamente se consideran los pixeles con $\ell \leq 175$.  La luminosidad correspondiente sigue esta consideración. 
+
+Con estas medidas se calcularán los niveles de MAGDA en las zonas metropolitanas. 
+
+[Mex_VIIRS]: ficha_figs/mexico_viirs.png
+[NOAA]: http://ngdc.noaa.gov/eog/download.html
+[^georef]: Se utiliza el sistema de información geográfica QGIS.
+
+
+## Comisión Nacional Bancaria y de Valores
+
+La CNBV proporciona datos mensuales de transacciones y otras variables bancarias a nivel de localidad y por institución.  Se utilizaron series de transacciones en cajeros automáticos que se denota como $\mu$.  Las series más básicas llevan subíndices $\mu_{m,\tau,b}$ y corresponden al municipio $m \in \mathcal{M}$, periodo $\tau \in \mathcal{T}$ e institución bancaria $b \in \mathcal{B}$. 
+
+Las agrupaciones en cada índice se obtienen como sumas de los datos individuales.  Se agregan las operaciones tanto por trimestre como por grupos de instituciones bancarias.  Estos grupos se especifican para cada estado $B_e \subset \mathcal{B}$;  se seleccionan a partir de bancos principales: `Banamex`, `BBVA Bancomer`, `Otros Bancos` o `Todos Bancos` y algunas posibles combinaciones de ellos. 
+
+El motivo de esta especificación es que se encontraron series $\mu_{m,t,b}$ con anomalías ocurriendo en diferentes regiones.  Debido a ésto se aplicó el proceso de X11 y se eligió un grupo de bancos $B_e$ para cada estado $e \in \mathcal{E}$; a partir de ellas se obtuvieron las series de los municipios correspondientes.  El proceso detallado de esta selección se puede ver en el apéndice.  
+
+Por ejemplo para $e = \texttt{CDMX}$ se determinaron las series `Banamex` y `Otros Bancos` como el grupo $B_e$.  Entonces para los municipios correspondientes $m \subset e$ se suman las series de Banamex y Otros Bancos. 
+$$ \mu_{m,t} = \sum_{ \substack{ \tau \sim t \\ 
+                              b\in B_e} }\mu_{m,\tau,b}$$ 
+y donde $\tau \sim t$ son los meses de cada trimestre. 
+
+Para las ciudades y estados $R \in \mathcal{C,\,E}$ se suman sobre los municipios correspondientes
+$$ \mu_{R,t} = \sum_{m \subset R}\mu_{m,t}.$$
+
+Por último, las series de transacciones de cajeros aproximan a la actividad económica a través de los crecimientos proporcionales.  Se escribe el crecimiento trimestral mediante el superíndice $(\,\cdot\,)^\Delta$,
+$$ \mu_{R,t}^{\Delta} = \frac{\mu_{R,t}-\mu_{R,t-1}}{\mu_{R,t-1}}.$$ 
+
+
+
+# Modelado
+
+La estrategia para desarrollar MAGDA consiste en entrenar un modelo a nivel estatal, para después replicarlo con los datos correspondientes de las zonas metropolitanas.  Denotamos este índice de actividad económica como $\varrho_{t}(R)$ y se ajusta a diferentes regiones $R \in \mathcal{M,\,C,\,E}$, nótese la distinción con el PIBE y el ITAEE que miden el producto de los estados $e \in \mathcal E$ y escribimos como $\pi_{e,t}$ e $\iota_{e,t}$. 
+
+A su vez el modelo se separa en dos partes que corresponden al nivel y al crecimiento.  El cálculo de niveles se basa en los datos de luminosidad urbana, mientras que el de crecimiento en los datos de cajeros automáticos.  Esta división apoya los siguientes puntos considerables: 
+
++ La luminosidad refleja el tamaño de las economías.  Los artículos de Chen y Henderson han apoyado esta tesis, y examinan características donde la relación se hace más o menos robusta. 
+
++ Un supuesto fundamental de MAGDA es que la actividad económica proviene mayoritariamente de las localidades urbanas de las regiones.  Esto se debe a que hay zonas oscuras que por su gran extensión acumulan luminosidad, pero que no es acorde con la producción debido a que están despobladas. 
+
++ El crecimiento en la actividad económica de las ciudades está ligado a las transacciones monetarias que hacen los usuarios de la banca, y específicamente a su demanda de efectivo.  Este punto concuerda con el cálculo del ITAEE que incluye dichas transacciones a la vez que se permite una agregación refinada. 
+
+
+
+![Luminosidad municipal][mapa_municipios]
+
+La intensidad del color de los municipios está relacionada con su luminosidad logarítmica.  Además se indican las fronteras de las entidades federativas, a partir de la cual se estima el modelo. 
+
+En los siguientes apartados describimos los detalles técnicos. 
+
+
+[mapa_municipios]: ficha_figs/municipios_viirs.png
+
+## Niveles de actividad económica
+
+Este cálculo utiliza los datos de PIBE de los estados y de luminosidad urbana de los municipios.  Para un periodo inicial $t_0 = 2014$, se toman los datos correspondientes y se distribuye el PIBE con respecto a la luminosidad.  Para las ciudades o zonas metropolitanas se agregan los municipios correspondientes. 
+
+Para cada municipio $m \in \mathcal M$ se calcula su actividad económica como 
+$$ \mathrm{\varrho}_{t_0}(m) = \frac{\Lambda^{U}(m)}{\Lambda^{U}(e)} \pi_{e,t_0}$$
+donde $e = e(m)$ es el estado al que pertenece el municipio $m$ y la luminosidad $\Lambda^U(\,\cdot\,)$ es la correspondiente a la luminosidad urbana libre de combustión con $\ell \leq 175$ que se introdujo anteriormente. 
+
+La actividad económica de las zonas metropolitanas $c \in \mathcal C$ se obtiene sumando sobre sus municipios
+$$ \varrho_{t_0}(c)=\sum_{m \in c}\varrho_{t_0}(m).$$
+En el caso de las metrópolis que se concentran en un solo estado esta estimación es igual a la ponderación por luminosidad del PIBE correspondiente
+$$ \varrho_{t_0}(c)=\frac{\Lambda^U(c)}{\Lambda^U(e)}\pi_{e,t_0}.$$
+Cabe mencionar que éstas no son todas las zonas metropolitanas, pues hay algunas que se dividen en dos o más entidades federativas.  Éstas son pocas por lo que podemos mencionarlas: La Laguna, La Piedad-Pénjamo, Puebla-Tlaxcala, Puerto Vallarta y el Valle de México.  
+
+Si bien la representación en términos de sus municipios permite estimar la actividad económica para estas zonas metropolitanas, también se controla por dicha separación a la vez que las representamos con sus partes correspondientes.
+
+Después de considerar el nivel de actividad económica en $t_0$, se modela los niveles subsecuentes a partir del modelo de crecimiento de las transacciones de cajeros automáticos que explicamos a continuación. 
+
+
+## Crecimiento
+
+El crecimiento de actividad económica está ligado a los datos de transacciones de cajeros automáticos.  Esta consideración se puede justificar tanto teóricamente como en la práctica si utilizamos el ITAEE como el indicador base.  
+
+En la teoría, las transacciones de cajeros automáticos son una medida simplificada del crecimiento de la actividad económica en la sociedad, y éste tiene una relación dinámica con la producción.  En la práctica, el cálculo del ITAEE también utiliza datos de la banca comercial provistos por la CNBV[^banca].  En la gráfica \ref{crecimiento} se ve la similitud de las transacciones con la actividad económica que representa el ITAEE en los estados.  
+
+![Crecimiento de actividad\label{crecimiento}][crecimiento] 
+
+Cuantificamos esta similitud con el siguiente modelo
+$$ \iota_{e,t}^\Delta \sim \alpha_0^e + 
+\alpha_1^e\mu_{e,t}^\Delta + \alpha_4^e\mu_{e,t-4}^\Delta $$
+
+donde análogamente se tienen los crecimientos proporcionales $(\,\cdot\,)^\Delta$.  Los coeficientes $\alpha_{(\,\cdot\,)}^e$ con superíndice están asociados a cada estado y el término $\alpha_4^e\mu_{e,t-4}^\Delta$ captura el efecto estacional.  
+
+Los resultados de la estimación los expresamos con $\hat \alpha$'s como coeficientes y $\varepsilon$'s como error 
+$$ \iota_{e,t}^\Delta = \hat\alpha_0^e + 
+\hat\alpha_1^e\mu_{e,t}^\Delta + \hat\alpha_4^e\mu_{e,t-4}^\Delta + \varepsilon_{e,t}. $$
+
+Estos modelos de crecimientos son los que aplicaremos a las zonas metropolitanas para después estimar los valores de MAGDA para las ciudades $\varrho_t(c)$.
+
+[^banca]: Indicador Trimestral de la Actividad Económica Estatal.  Fuentes y metodologías. 
+
+[crecimiento]: ficha_figs/crecimiento_actividad.png
+
+
+## Integración de crecimiento
+
+Después de la estimación del crecimiento de los estados se aplica la relación a las zonas metropolitanas.  Sustiyendo los datos observados en estados $e$ por ciudades $c$ queda, 
+$$ \varrho_{t}^\Delta(c) = \hat\alpha_0^e + 
+      \hat\alpha_1^e\mu_{c,t}^\Delta +
+      \hat\alpha_4^e\mu_{c,t-4}^\Delta $$
+donde $e = e(c)$ es el estado al que pertenece la ciudad $c$, o las partes correspondientes cuando las ciudades pertenecen a más estados.
+
+A partir de los niveles base $\varrho_{t_0}(c)$ que fueron calculados, se aplica la relación del cambio porcentual $\varrho_t(c) = \varrho_{t-1}(c)[1+\varrho_t^\Delta(c)]$ repetidamente y se puede generalizar como
+$$ \varrho_{t}(c) = \varrho_{t_0}(c)\frac{\Pi_{s \leq t}[1+\varrho_s^\Delta(c)]}
+      {\Pi_{s \leq t_0}[1+\varrho_s^\Delta(c)]}.$$
+Finalmente se juntan dichos niveles en las ciudades que cruzan las fronteras estatales, que nos da el índice MAGDA.  
+
+# Resultados
+
+MAGDA tiene una $\mathrm{R}^2$ de 59.7% en su estimación con ITAEE.  Debido a la forma independiente en cada estado, se encontró que la estimación para la Ciudad de México es la más acertada con 84.6%, mientras que encontramos estados en los que el ajuste es bajo como Campeche que apenas tiene $\mathrm{R}^2$ de 0.06%.  Esto se debe a la alta proporción de actividad petrolera en dicho estado. 
+
+Con referencia al ITAEE, calculamos también el crecimiento anual acumulado de MAGDA para los estados que se define como el promedio de los crecimientos con respecto al año anterior.  Con fórmulas, si $\varrho_t^{\Delta, 4} = \frac{\varrho_t - \varrho_{t-4}}{\varrho_{t-4}}$ es el crecimiento con respecto al año anterior, el crecimiento anual acumulado es
+$$ \Delta_T(e) = \frac{1}{4}\sum_{t \sim T}\varrho_t^{\Delta,4}(e)$$
+donde $T$ es el año en cuestión y la suma se toma sobre los trimestres asociados $t ~ T$.
+
+A continuación se muestra las tablas para las zonas metropolitanas de MAGDA y su crecimiento anual acumulado. 
+
+```{r, results='asis', echo=F}
+metros <- read_csv("../../data/referencias/zonas_metro_bye.csv") %>% 
+  select(nombre_corto, bye_bye) 
+
+pred_metro <- read_csv("ficha_tbls/selecto_zona_metro_martes.csv") %>%
+  select(
+    Id = CVEMET,
+    Periodo = trimestre,
+    `Zona metropolitana` = zona_metro,
+    MAGDA = magda, 
+    Cambio = anual_acum) %>% 
+  left_join(metros, by = c("Zona metropolitana" = "nombre_corto")) %>% 
+  filter(!bye_bye) %>% select(-bye_bye) %>% 
+  group_by(Id, `Zona metropolitana`) %>% 
+  mutate(magda_14 = MAGDA[Periodo == "2014-12-01"],
+      `MAGDA 15` = magda_14*(1 + Cambio[Periodo == "2015-12-01"]),
+      `MAGDA 13` = magda_14/(1 + Cambio[Periodo == "2014-12-01"])) %>% 
+  filter(quarter(Periodo) == 4, Periodo > "2014-01-01") %>% 
+  mutate(Periodo = year(Periodo) - 2000) %>% select(-MAGDA) %>% 
+  spread(Periodo, Cambio) %>% 
+  select(Id, `Zona metropolitana`, 
+         `MAGDA 13`, `MAGDA 14` = magda_14, `MAGDA 15`, 
+         `Cambio 14` = `14`, `Cambio 15` = `15`) %>% ungroup %>% 
+  mutate(Id = as.integer(Id), 
+         `Cambio 14` = `Cambio 14`*100,
+         `Cambio 15` = `Cambio 15`*100)
+    
+pred_tabla <- pred_metro %>%
+  xtable(digits = 1, row.names = F)
+  
+print(pred_tabla,
+  size="\\scriptsize",
+  format.args=list(big.mark = " "),
+  include.rownames=FALSE)
+```
+
+![Comparación estados][comparación] 
+
+[comparación]: ficha_figs/niveles_estimado_v2.eps
+
+# Apéndice
+
+## Series de transacciones bancarias
+
+
+Se aplicaron filtros estadísticos a las 6,000 series de demanda de efectivo de la CNBV para que fueran útiles para este análisis. La precisión de las estimaciones mejorará en la medida en que los bancos comerciales produzcan mejor información del uso de cajeros automáticos y la reporten correctamente a la CNBV, o estos reportes se integren y publiquen de manera enteramente automatizada. 
+
+A continuación se detalla el proceso de estos datos. 
+
+1. Las series de transacciones bancarias se descargan del sitio de [CNBV](http://portafolioinfo.cnbv.gob.mx/PUBLICACIONES/IO/Paginas/bm.aspx).  Siguiendo el formato del archivo se separan los distintos bancos $b \in \mathcal{B}$, para cada mes $\tau \in \mathcal{T}$ y cada colonia $\zeta \in \textrm{Col}$.  
+2. Se agregan las colonias en los municipios $\zeta \sim m$ y distinguen las series de bancos principales, Banamex y BBVA Bancomer.  
+Con ello se obtienen las series básicas $\mu^{m, \beta}_\tau$ donde $\beta$ es una de cuatro opciones: `banamex`, `bbva_bancomer`, `demás_bancos` o `todos_bancos`.  Estos grupos se determinaron de acuerdo al volumen de las transacciones y su presencia en los municipios de todo el país.  BBVA Bancomer y Banamex en su conjunto representan la mayoría de las transacciones para casi todos los estados.    
+  
+3. Para cada municipio y grupo de bancos, se genera una serie que se le aplica el proceso de análisis X11[^x11] que la descompone en tres partes 
+$$ \mu_\tau = \mu_\tau^\textrm{tend} + \mu_\tau^\textrm{ciclo} + \mu_\tau^\textrm{out} $$
+cuyas componentes `tend`, `ciclo`, `out` corresponden a tendencia, ciclos y _outliers_.  Se reconstruya la serie omitiendo el tercer componente
+$$ \mu_\tau^\texttt{sin.out*} = \mu_\tau^\textrm{tend} + \mu_\tau^\textrm{ciclo}. $$
+Este proceso corrige anomalías de pocos periodos, sin embargo no corrige anomalías de periodos prolongados. 
+
+4. Profundizando en el análisis, se compara la desviación proporcional de las nuevas series con sus originales para encontrar aquellas que tengan más de la mitad de las desviaciones mayores que cierto corte.  Sea $\nu$ la mediana de las desviaciones
+$$ \nu = \mathrm{mediana} \Big\{ 
+      \frac{ \mu_\tau^\texttt{sin.out*} - \mu_\tau}{ \mu_\tau} \Big\vert \ \tau \in \mathcal{T} \Big\} , $$
+de tal forma que sólo se ajustan las series en las que la mediana $\nu_{m, \beta} < 0.7$. Este corte se encontró bajo inspección de las series anómalas.  
+Nos queda la serie sin _outliers_, 
+$$ \mu_\tau^\texttt{sin.out} = \begin{cases}
+      \mu_\tau^\texttt{sin.out*} & \textrm{si } \nu \leq 0.7 \\
+      \mu_\tau   & \textrm{si } \nu > 0.7
+      \end{cases}$$
+que se agregan para cada trimestre
+$$ \mu_t^\texttt{sin.out} = \sum_{\tau\sim t} \mu_t. $$
+ 
+5. Para seleccionar la serie de cada municipio con respecto a los posibles grupos de bancos, se agrupan por estado y comparan con las series de ITAEE.
+Es decir para un estado $e \in \mathcal{E}$ considérense las series sin _outliers_
+$$ \mu_t^{e,\beta} = \sum_{m \subset e} \mu_t^{m, \beta} $$ 
+donde ahora $\beta$ es alguna de `banamex`, `bbva_bancomer`, `demás_bancos`, y algunas combinaciones de sus sumas.  
+Se elige como base la $\beta$ que corresponde a `banamex`, dado que es la más estable, y añadimos otros grupos dependiendo de acuerdo al ajuste de correlación con el ITAEE. La serie final de cada municipio se toma de acuerdo a la $\beta_e$ correspondiente
+$$ \mu_t^\texttt{banco} = \mu_t^{\beta_e}.$$
+
+Con este procedimiento se calculan las series de transacciones de cajeros y se modela el crecimiento de MAGDA.  
+
+[^x11]: http://www.census.gov/srd/www/x13as/
+
+
+# Bibliografía
+
+
+
+
+
+
+
+
