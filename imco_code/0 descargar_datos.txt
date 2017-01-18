@@ -41,6 +41,7 @@ $ https://data.ngdc.noaa.gov/instruments/remote-sensing/passive/spectrometers-ra
 El script en terminal descarga y procesa el archivo. (copiar URL)
 $ ./0\ descargar_viirs.sh https://data.ngdc.noaa.gov/instruments/remote-sensing/passive/spectrometers-radiometers/imaging/viirs/dnb_composites/v10//201412/vcmslcfg/SVDNB_npp_20141201-20141231_75N180W_vcmslcfg_v10_c201502231126.tgz
 
+
 El script anterior depende de la versión del programa gdal, en caso que 
 marque error se puede descargar de S3 como...
 $ aws s3 ls s3://opi-data-science/play/imco/SVDNB_201412_vcmslcfg.cf_cvg.tif ../data/viirs/raw_raster/final/
@@ -51,7 +52,7 @@ Los datos de la NOAA se procesan aparte en QGIS.
 1. Abrir capa de ráster del .tif generado en: ../data/viirs/raw_raster/final/
 2. Aplicar raster-calculator:  viirs_175 = viirs * (viirs <= 175), 
     - guardar en ../data/viirs/processed/tope_175.tif
-3. Abrir capa de vectores de .shp en ../data/inegi/marco_geo/raw/
+3. Abrir capa vectorial de .shp en ../data/inegi/marco_geo/raw/
     - poligonos_localidades_urbanas_y_rurales
 4. Guardar capa de localidades con proyección de ráster
     - botón derecho > guardar como > CRS = EPS:4326, 
@@ -60,11 +61,15 @@ Los datos de la NOAA se procesan aparte en QGIS.
     - viirs_175 suma con datos_localidades
     - columna de salida: _175.
     
+# Referencia
+
 Los datos de referencia se pueden descargar de: 
 aws s3 cp --recursive s3://opi-data-science/play/imco/referencias/ ../data/referencias/
 
 
-
+# Algunos paquetes se cargan automáticamente al abrir el proyecto-R. 
+Verificar la instalación previa de stringr, data.table, lubridate, 
+readr, dtplyr, tidyr, ggplot2, dplyr, magrittr. 
 
 
 
