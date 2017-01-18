@@ -1,0 +1,46 @@
+, 
+  @henderson_12, 
+  @elvidge_13
+
+
+
+@article{ghosh_10, 
+  title   = {Shedding Light on the Global 
+      Distribution of Economic Activity},
+  author  = {Tilottama Ghosh, Rebecca L. Powell, Christopher D. Elvidge,
+      Kimberly E. Baugh, Paul C. Sutton, Sharolyn Anderson}
+  journal = {The Open Geography Journal}, 
+  number  = {3}, 
+  pages   = {148-161},
+  year    = {2010}
+}
+
+@article{elvidge_13, 
+  title={Why VIIRS data are superior to DMSP for mapping 
+      nighttime lights},
+  author={Christopher D. Elvidge, Kimbery Baugh, Mikhail Zhiszhin, 
+      Feng Chi Hsu}
+  journal={Proceedings of the Asia-Pacific Advanced Network}, 
+  volume={35}, 
+  pages={62-69},
+  year={2013}
+}
+
+@article{frança_14, 
+  title={Visualizing the "Heartbeat" of a City with Tweets},
+  author={Urbano França, Hiroki Sayam, Colim McSwiggen, 
+      Roozbeh Daneshvar, Yaneer Bar-Yam},
+  journal={arXiv}
+}
+
+
+
+
+
+
+
+
+
+
+
+
