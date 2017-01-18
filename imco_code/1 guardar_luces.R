@@ -95,11 +95,11 @@ estados_datos <- edos_data %>%
 
 # 4. Escribir tablas
 
-write_csv(locs_data, "../data/agrupadas/locs_luces_175.csv")
+write_csv(locs_data, "../data/viirs/processed_tables/locs_luces_175.csv")
 
-write_csv(municipios_datos, "../data/agrupadas/mun_luces_175.csv")
+write_csv(municipios_datos, "../data/viirs/processed_tables/mun_luces_175.csv")
 
-write_csv(estados_datos, "../data/agrupadas/edos_luces_175.csv")
+write_csv(estados_datos, "../data/viirs/processed_tables/edos_luces_175.csv")
 
 
 

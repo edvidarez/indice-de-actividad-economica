@@ -1,12 +1,6 @@
 # Diego Villamil, OPI
 # CDMX, 15 de diciembre de 2016
 
-# 1. Bajar series del BIE:
-#   - Indicadores económicos de coyuntura > ITAEE > 
-#       Series desestacionalizadas > se limpian después
-#   - Cuentas nacionales > PIBE > Act. Eco. y Ent. Federativa > 
-#       Precios constantes 2008 > Total de Act. Eco. 
-
 
 estados <- read_csv("../data/referencias/estados.csv") %>% 
   mutate(CVEENT = str_pad(cveent, 2, "left", "0")) %>% 
