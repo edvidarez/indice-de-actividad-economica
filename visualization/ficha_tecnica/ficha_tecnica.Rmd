@@ -1,11 +1,13 @@
 ---
 title: "Medición de la Actividad Económica a partir de Grandes Datos (MAGDA)"
-author: IMCO y OPI ^[El Instituto Mexicano para la Competitividad (IMCO) es una
-  asociación civil que propone políticas públicas y acciones viables e influir en
-  su ejecución para lograr un México próspero e incluyente (www.imco.org.mx).
+author: IMCO y OPI con el apoyo de la Fundación Friedrich Naumann^[El Instituto Mexicano para la Competitividad (IMCO)
+  es una asociación civil que propone políticas públicas y acciones
+  viables e influir en su ejecución para lograr un México próspero e
+  incluyente (www.imco.org.mx).  
     OPI es una empresa líder de mercado en la investigación de grandes
-  datos (www.opi.la).]
-date: "CDMX a 12 de enero de 17"
+  datos (www.opi.la).  
+    Fundación Friedrich Naumann es una organización no gubernamental dedicada a la revaloración del Liberalismo como filosofía (http://www.la.fnst.org/)]
+date: "Ciudad de México a 18 de enero de 2017"
 output:
   pdf_document:
     fig_caption: yes
