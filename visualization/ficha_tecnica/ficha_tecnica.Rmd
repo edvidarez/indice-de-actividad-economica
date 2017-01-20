@@ -6,7 +6,7 @@ author: IMCO y OPI con el apoyo de la Fundación Friedrich Naumann^[El Instituto
   incluyente (www.imco.org.mx).  
     OPI es una empresa líder de mercado en la investigación de grandes
   datos (www.opi.la).  
-    Fundación Friedrich Naumann es una organización no gubernamental dedicada a la revaloración del Liberalismo como filosofía (http://www.la.fnst.org/)]
+    Fundación Friedrich Naumann es 9una organización no gubernamental dedicada a la revaloración del Liberalismo como filosofía (http://www.la.fnst.org/)]
 date: "Ciudad de México a 18 de enero de 2017"
 output:
   pdf_document:

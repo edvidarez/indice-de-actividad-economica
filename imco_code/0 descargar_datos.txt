@@ -24,7 +24,7 @@ Guardar en:  ../data/bie/raw/pibe.csv
 
 Marco Geoestadístico:
 http://www.inegi.org.mx/geo/contenidos/geoestadistica/m_geoestadistico.aspx
-Seleccionar 2016 > Datos vectoriales > descarga. 
+Seleccionar Datos vectoriales > descarga. 
 Descomprimir en: ../data/inegi/
 En terminal correr 
 $ mv ../data/inegi/702825217341_s/conjunto_de_datos/* ../data/inegi/marco_geo/raw/
