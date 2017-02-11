@@ -5,4 +5,4 @@ La Medición de Actividad con Grandes Datos es desarrollada mediante el trabajo 
 Las características principales de este índice son desagregación, frecuencia, accesibilidad, participación.
 Para más información se puede consultar la [documetación](visualization/ficha_tecnica/ficha_tecnica.pdf) en la carpeta de `visualization`.  
 
-Este repositorio se hace accesible para la interaccin con el público. 
+Este repositorio se hace accesible para la interacción con el público. 
