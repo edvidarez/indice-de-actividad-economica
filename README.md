@@ -7,7 +7,7 @@ Si deseas tener más información sobre la elaboración del índice consulta la 
 
 En este repo encontrarás el código que utilizamos para crear el índice MAGDA.  Es decir, incluimos el código necesario para su elaboración y algunos elementos adicionales que hicieron este proceso interesante.  Sin embargo vale la pena mencionar que el proceso incluye muchas pruebas de aprendizaje o intentos de índíces que no se usan en el índice final.  Los _scripts_ correspondientes no los incluimos en este repo. 
 
-El objetivo de este repo es hacer accesible el código para que colegas analistas sigan el proceso, e incluso los más dedicados tengan su propio laboratorio de actividad económico. 
+El objetivo de este repo es hacer accesible el código para que colegas analistas sigan el proceso, e incluso los más dedicados tengan su propio laboratorio de actividad económica. 
 
 
 ## Manos a la obra
