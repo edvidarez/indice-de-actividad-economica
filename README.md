@@ -3,7 +3,7 @@
 La Medición de Actividad con Grandes Datos es desarrollada mediante el trabajo conjunto de [IMCO](www.imco.org.mx) y [OPI](www.opi.la) con el apoyo de la [Fundación Friedrich Naumann](http://www.la.fnst.org). 
 
 Las características principales de este índice son desagregación, frecuencia, accesibilidad, **participación**.
-Si deseas tener más información sobre la elaboración del índice consulta la [documentación](visualization/ficha_tecnica/ficha_tecnica.pdf).  O si prefieres seguir los pasos de la elaboración del índice, entonces puedes seguir con la lectura de este LÉAME/README.   
+Si deseas tener más información sobre la elaboración del índice, consulta la [documentación](visualization/ficha_tecnica/ficha_tecnica.pdf).  O si prefieres seguir los pasos de la elaboración del índice puedes seguir con la lectura de este README.   
 
 En este repo encontrarás el código que utilizamos para crear el índice MAGDA.  Es decir, incluimos el código necesario para su elaboración y algunos elementos adicionales que hicieron este proceso interesante.  Sin embargo vale la pena mencionar que el proceso incluye muchas pruebas de aprendizaje o intentos de índíces que no se usan en el índice final.  Los _scripts_ correspondientes no los incluimos en este repo. 
 
@@ -23,8 +23,6 @@ $ git clone git@github.com:opintel/indice-de-actividad-economica.git .
 ```
 
 Para seguir, abre el archivo `imco_code/0_descargar_datos.txt` en donde especifica los datos que hay que descargar.  Las agencias que proveen esos datos son:  INEGI, CNBV, NOAA, en los sitios respectivos. 
-
-
 
 
 
