@@ -12,7 +12,7 @@ El objetivo de este repo es hacer accesible el código para que colegas analista
 
 ## Manos a la obra
 
-En este proyecto se utiliza mayoritariamente R, un programa y lenguaje para cómputo estadístico, el sitio de internet es (https://www.R-project.org/).  El _software_ [QGIS](http://www.qgis.org/en/site/) también son necesarias, aunque en menor medida; junto con él la dependencia geoespacial [GDAL](http://www.gdal.org/) también es necesaria.
+En este proyecto se utiliza mayoritariamente R, un programa y lenguaje para cómputo estadístico, el sitio de internet es (https://www.R-project.org/).  El _software_ [QGIS](http://www.qgis.org/en/site/) también es necesario, aunque en menor medida; junto con él la dependencia geoespacial [GDAL](http://www.gdal.org/) también se requiere.
 
 Nuestras instrucciones siguen el formato de terminal de Linux o Mac. El código está escrito en su mayoría en español, pero no debe sorprender si encuentras referencias en inglés. 
 
