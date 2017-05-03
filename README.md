@@ -14,7 +14,7 @@ El objetivo de este repo es hacer accesible el código para que colegas analista
 
 En este proyecto se utiliza mayoritariamente R, un programa y lenguaje para cómputo estadístico, el sitio de internet es (https://www.R-project.org/).  El _software_ [QGIS](http://www.qgis.org/en/site/) también es necesario, aunque en menor medida; junto con él la dependencia geoespacial [GDAL](http://www.gdal.org/) también se requiere.
 
-Nuestras instrucciones siguen el formato de terminal de Linux o Mac. El código está escrito en su mayoría en español, pero no debe sorprender si encuentras referencias en inglés. 
+Nuestras instrucciones siguen el formato de terminal de Linux o Mac. El código está escrito en su mayoría en español, pero también contiene algunas referencias en inglés. 
 
 Sugerimos clonar el repositorio en un directorio local
 ```
@@ -22,7 +22,7 @@ $ cd directorio_local
 $ git clone git@github.com:opintel/indice-de-actividad-economica.git .
 ```
 
-Abrir el archivo `imco_code/0_descargar_datos.txt` en donde especifica los datos que hay que descargar.  Las agencias que proveen esos datos son:  INEGI, CNBV, NOAA. 
+Para seguir, abre el archivo `imco_code/0_descargar_datos.txt` en donde especifica los datos que hay que descargar.  Las agencias que proveen esos datos son:  INEGI, CNBV, NOAA, en los sitios respectivos. 
 
 
 
