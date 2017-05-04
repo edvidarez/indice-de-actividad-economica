@@ -1,6 +1,6 @@
 
 # Índice MAGDA
-La Medición de Actividad con Grandes Datos es desarrollada mediante el trabajo conjunto de [IMCO](www.imco.org.mx) y [OPI](www.opi.la) con el apoyo de la [Fundación Friedrich Naumann](http://www.la.fnst.org). 
+La Medición de Actividad con Grandes Datos es desarrollada mediante el trabajo conjunto de [IMCO](www.imco.org.mx) y [OPI](www.opi.la) con el apoyo de [Fundación Friedrich Naumann](http://www.la.fnst.org). 
 
 Las características principales de este índice son desagregación, frecuencia, accesibilidad, **participación**.
 Si deseas tener más información sobre la elaboración del índice, consulta la [documentación](visualization/ficha_tecnica/ficha_tecnica.pdf).  O si prefieres seguir los pasos de la elaboración del índice puedes seguir con la lectura de este README.   
