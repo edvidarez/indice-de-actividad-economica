@@ -8,11 +8,12 @@ Descargamos datos de los siguientes sitios.
 CNBV, INEGI, NOAA, BIE, y datos de referencia. 
 
 
-# CNBV
+## CNBV
 Vínculo:  http://portafolioinfo.cnbv.gob.mx/PUBLICACIONES/IO/Paginas/bm.aspx
+Archivos desde 2011 abril, hasta el más reciente. 
 Guardar en: data/cnbv/raw/
 
-# INEGI: 
+## INEGI: 
 Vínculo:  http://www.inegi.org.mx/sistemas/bie/
 Camino:   - Indicadores económicos de coyuntura > ITAEE > 
   Series desestacionalizadas > todas
@@ -30,22 +31,34 @@ En terminal correr
 $ mv ../data/inegi/702825217341_s/conjunto_de_datos/* ../data/inegi/marco_geo/raw/
 
 
-# NOAA
-Visitar el sitio de la NOAA, para localizar el URL correcto 
-(el URL que se menciona puede cambiar).
-https://ngdc.noaa.gov/eog/viirs/download_monthly.html
+## NOAA
+Visita el sitio de la NOAA, https://ngdc.noaa.gov/eog/viirs/
+Sigue los clics y descarga el archivo (puede tarda unos minutos),
+VIIRS DNB Nighttime Lights > 2014 > Monthly > 201412 > Tile1_75N180W > VCMSLCFG 
+Guardar en: ../data/viirs/
 
-Se utilizan los datos de diciembre 2014-Tile 1-VCMSLCFG 
-$ https://data.ngdc.noaa.gov/instruments/remote-sensing/passive/spectrometers-radiometers/imaging/viirs/dnb_composites/v10//201412/vcmslcfg/SVDNB_npp_20141201-20141231_75N180W_vcmslcfg_v10_c201502231126.tgz
+Descomprimir el archivo y renombrar como: 
+../data/viirs/vcmslcfg_201412.tif
 
-El script en terminal descarga y procesa el archivo. (copiar URL)
+Para recortar la foto a la República Mexicana ejecuta en terminal,
+.../imco_code$ gdalwarp -q -cutline ../data/inegi/marco_geo/raw/areas_geoestadisticas_estatales.shp \
+  -crop_to_cutline --config GDALWARP_IGNORE_BAD_CUTLINE YES \
+  "../data/viirs/vcmslcfg_201412.tif" \
+  "../data/viirs/luminosidad_mexico.tif"
+
+Ejecuta el siguiente comando en terminal, 
 $ ./0\ descargar_viirs.sh https://data.ngdc.noaa.gov/instruments/remote-sensing/passive/spectrometers-radiometers/imaging/viirs/dnb_composites/v10//201412/vcmslcfg/SVDNB_npp_20141201-20141231_75N180W_vcmslcfg_v10_c201502231126.tgz
 
+Si marca error es posible que la dirección haya cambiado, Visita el sitio de la NOAA, 
+https://ngdc.noaa.gov/eog/viirs/
+VIIRS DNB Nighttime Lights > 2014 > Monthly > 201412 > Tile1_75N180W > VCMSLCFG
 
-El script anterior depende de la versión del programa gdal, en caso que 
-marque error se puede descargar de S3 como...
-$ aws s3 ls s3://opi-data-science/play/imco/SVDNB_201412_vcmslcfg.cf_cvg.tif ../data/viirs/raw_raster/final/
+Con el botón derecho copia la dirección del archivo y sustitúyela en el comando anterior.
 
+El script en terminal descarga y procesa el archivo. (copiar URL)
+
+
+### Procesar datos de NOAA.
 
 Los datos de la NOAA se procesan aparte en QGIS. 
 
