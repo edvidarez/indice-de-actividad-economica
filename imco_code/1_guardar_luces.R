@@ -14,6 +14,7 @@
 
 library(rgdal)
 
+
 areas_shape <- function (shape) {  # Los applies se ven complicators.
   # Shape es una estructura, de listas de estructuras.
   areas_ <- shape@polygons %>% 
@@ -69,7 +70,7 @@ locs_shp <- readOGR("../data/inegi/marco_geo/processed",
 
 locs_data <- datos_shape(locs_shp, "localidad") %>% 
   rename(CVELOC = CVEGEO) %>% 
-  select(CVELOC, nombre, LUMEN = luz_sum, area, x175) 
+  select(CVELOC, nombre, area, x175) 
 
 # Descomentar, 
 # edos_data <- datos_shape(edos_shp, "estado") %>% 
@@ -102,7 +103,8 @@ locs_data <- datos_shape(locs_shp, "localidad") %>%
 
 # 4. Escribir tablas
 
-write_csv(locs_data, "../data/viirs/processed_tables/locs_luces_175.csv")
+write_csv(locs_data, 
+    "../data/viirs/processed/locs_luces_175.csv")
 
 # write_csv(municipios_datos, "../data/viirs/processed_tables/mun_luces_175.csv")
 # 

@@ -1,16 +1,16 @@
 ### Actividad económica municipal (limpia)
 
-# library(tidyr)
 library(dplyr)
+library(multidplyr)
 library(seasonal)
+filter <- dplyr::filter
 
 # leemos la tabla que ya trae la info por municipio de Banamex y Bancomer, generada por Diego
 
-spr_src <- read_csv("por_municipio_x11.csv" %>% 
-    file.path("../data/cnbv/processed", .)) %>% 
+spr_src <- read_csv("../data/cnbv/processed" %>% file.path(
+    "grupos_municipios_prex11.csv"), col_types = cols()) %>% 
   mutate(CVEMUN = CVEMUN %>% str_pad(5, "left", "0")) %>% 
-  gather("banco", "trans", bancomer:otros) %>% 
-  filter(fecha != "2011-03-01")
+  gather("banco", "trans", bancomer:otros) 
 
 empieza <- spr_src$fecha %>% min %>% {c(year(.), month(.))}
 
@@ -18,29 +18,37 @@ empieza <- spr_src$fecha %>% min %>% {c(year(.), month(.))}
 # Identificamos las que son todas 0. 
 muns_cero <- spr_src %>% 
   group_by(CVEMUN, banco) %>% 
-  summarize(es_cero = all(trans == 0))
+  summarize(es_cero = all(trans == 0)) %>% 
+  filter(es_cero)
 
-spr_x13 <- spr_src %>% 
-  left_join(muns_cero, by=c("CVEMUN", "banco")) %>% 
-  filter(!es_cero) %>% select(-es_cero) %>% 
+spr_x11 <- spr_src %>% 
+  anti_join(muns_cero, by = c("CVEMUN", "banco")) %>% 
   mutate(trans = trans + 1) %>% 
   spread(fecha, trans, fill = 1)
   
 
 # Para el resto de las series, queremos hacer una lista de series
 
+t_series <- spr_src %>%
+  anti_join(muns_cero, by = c("CVEMUN", "banco")) %>%
+  mutate(trans = trans + 1) %>%
+  partition(CVEMUN, banco) %>%
+  do(serie = ts(.$trans, start = empieza, frequency = 12))
+     
+
 ls1 <- list()
-for(j in 1:nrow(spr_x13)){
-  act   <- spr_x13[j,3:69] %>% t() %>% as.vector()
-  colti <- paste0(spr_x13[j,1], "_", spr_x13[j,2])
+for(j in 1:nrow(spr_x11)){
+  act   <- spr_x11[j,3:69] %>% t() %>% as.vector()
+  colti <- paste0(spr_x11[j,1], "_", spr_x11[j,2])
   tss   <- ts(act, start = empieza, frequency = 12)
   ls1[[colti]] <- tss
 }   
 
 
 # Loop over data
-l1 <- lapply(ls1, function(e)
-  try(seas(e, x11 = "", x11.save = c("d10", "d12", "trend"))))
+l1 <- lapply(ls1, function(t_serie) {
+  try(seas(t_serie, x11 = ""))  # , x11.save = c("d10", "d12", "trend")
+}) 
 
 saveRDS(l1, "../data/cache/lista_de_x11.RDS")
 
