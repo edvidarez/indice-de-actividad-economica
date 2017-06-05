@@ -8,3 +8,4 @@ library(ggplot2)
 suppressMessages(library(dplyr))
 suppressMessages(library(magrittr))
 
+filter <- dplyr::filter

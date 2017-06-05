@@ -1,5 +1,6 @@
 
 
+
 # Configuración
 Se utiliza el software QGIS y R con RStudio.  También el paquete GDAL por terminal.
 En los sitios correspondientes se indica cómo instalarlos. 
@@ -66,19 +67,21 @@ Topamos a 175 debido a zonas con luminosidad extrema.  (Ver ficha técnica)
     - Renombrar como viirs
 2. Aplicar raster-calculator:  viirs * ( viirs <= 175), 
     - guardar en ../data/viirs/processed/tope_175.tif
-3. Abrir capa vectorial de .shp en ../data/inegi/marco_geo/raw/
-    - poligonos_localidades_urbanas_y_rurales
-4. Guardar capa de localidades con proyección de ráster
+3. Abrir capas vectoriales de .shp en ../data/inegi/marco_geo/raw/
+    - poligonos_localidades_urbanas_y_rurales.shp
+    - areas_geoestadisticas_municipales.shp
+4. Guardar capa de localidades y municipios con proyección de ráster
     - botón derecho > guardar como > General > CRS = EPS:4326, 
       ../data/inegi/marco_geo/processed/datos_localidades.shp
-5. Habilitar plugin, de zonal-statistics y aplicar función:  
-    - viirs_175 suma con datos_localidades
+      ../data/inegi/marco_geo/processed/datos_municipios.shp
+5. Habilitar plugin, de zonal-statistics y aplicar función en el menú Raster. 
+    - viirs_175 suma con datos_localidades y datos_municipios.
     - columna de salida: 175_
     
     
 # Referencia
 
-Los datos de referencia vienen incluidos en el repo de Git ya que no ocupan mucho espacio. 
+Los datos de referencia vienen incluidos en el repo de Git. 
 
 
 

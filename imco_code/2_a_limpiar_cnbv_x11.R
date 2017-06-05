@@ -1,11 +1,11 @@
-### Actividad económica municipal (limpia)
 
 library(dplyr)
 library(multidplyr)
 library(seasonal)
-filter <- dplyr::filter
+library(purrr)
 
-# leemos la tabla que ya trae la info por municipio de Banamex y Bancomer, generada por Diego
+# Leemos la tabla que ya trae la info por municipio de Banamex y
+# Bancomer, generada por Diego
 
 spr_src <- read_csv("../data/cnbv/processed" %>% file.path(
     "grupos_municipios_prex11.csv"), col_types = cols()) %>% 
@@ -13,7 +13,7 @@ spr_src <- read_csv("../data/cnbv/processed" %>% file.path(
   gather("banco", "trans", bancomer:otros) 
 
 empieza <- spr_src$fecha %>% min %>% {c(year(.), month(.))}
-
+# c(2011, 4)
 
 # Identificamos las que son todas 0. 
 muns_cero <- spr_src %>% 
@@ -25,32 +25,32 @@ spr_x11 <- spr_src %>%
   anti_join(muns_cero, by = c("CVEMUN", "banco")) %>% 
   mutate(trans = trans + 1) %>% 
   spread(fecha, trans, fill = 1)
-  
 
-# Para el resto de las series, queremos hacer una lista de series
 
-t_series <- spr_src %>%
-  anti_join(muns_cero, by = c("CVEMUN", "banco")) %>%
-  mutate(trans = trans + 1) %>%
-  partition(CVEMUN, banco) %>%
-  do(serie = ts(.$trans, start = empieza, frequency = 12))
-     
-
-ls1 <- list()
-for(j in 1:nrow(spr_x11)){
-  act   <- spr_x11[j,3:69] %>% t() %>% as.vector()
-  colti <- paste0(spr_x11[j,1], "_", spr_x11[j,2])
+names_ls1 <- vector(mode = "character", nrow(spr_x11))
+ls1 <- vector(mode = "list", nrow(spr_x11))
+for(i in 1:nrow(spr_x11)){
+  act   <- spr_x11[i,3:69] %>% t() %>% as.vector()
+  colti <- paste0(spr_x11[i,1], "_", spr_x11[i,2])
   tss   <- ts(act, start = empieza, frequency = 12)
-  ls1[[colti]] <- tss
-}   
+  names_ls1[i] <- colti
+  ls1[[i]] <- tss
+}
 
+
+names(ls1) <- names_ls1
 
 # Loop over data
-l1 <- lapply(ls1, function(t_serie) {
-  try(seas(t_serie, x11 = ""))  # , x11.save = c("d10", "d12", "trend")
-}) 
 
-saveRDS(l1, "../data/cache/lista_de_x11.RDS")
+cache_x11 <- "../data/cache/lista_x11s.RDS"
+if (not( cache_x11 %>% file.exists )) {
+  l1 <- lapply(ls1, function(t_serie) 
+          try(seas(t_serie, x11 = "")) ) 
+          # x11.save = c("d10", "d12", "trend")
+  saveRDS(l1, cache_x11)    
+} else {
+  l1 <- readRDS(cache_x11)
+} 
 
 
 # list failing models
@@ -59,35 +59,35 @@ summary(l1[is.err])
 length(summary(l1[is.err]))
 
 
-# return final series of successful evaluations
+# Return final series of successful evaluations
 
 # Hacemos esta función par distinguir las que se tienen que sumar 
 # de las que se tienen que multiplicar
 
 fechas <- spr_src$fecha %>% unique()
 
-trend <- lapply(l1[!is.err], trend) %>% 
-  {do.call(cbind, .)} %>% 
-  t() %>% as.data.frame() %>% 
+trend_ <- lapply(l1[!is.err], trend) %>%
+  {do.call(cbind, .)} %>%
+  t() %>% as.data.frame() %>%
   set_colnames(fechas)
 
-cycle <- lapply(l1[!is.err], . %>% {.$series$d10}) %>% 
-  {do.call(cbind, .)} %>% 
-  t() %>% as.data.frame() 
+cycle_ <- lapply(l1[!is.err], . %>% {.$series$d10}) %>%
+  {do.call(cbind, .)} %>%
+  t() %>% as.data.frame()
 
-trend$colti <- rownames(trend)
+trend_$colti <- rownames(trend_)
 
-colnames(cycle) <- fechas
-cycle$colti<-rownames(cycle)
+colnames(cycle_) <- fechas
+cycle_$colti <- rownames(cycle_)
 
-cycle$mulsum <- cycle[,1:67] %>% apply(1, . %>% abs %>% max)
+cycle_$mulsum <- cycle_[,1:67] %>% apply(1, . %>% abs %>% max)
 
-cycle <- cycle %>% 
+cycle_ <- cycle_ %>%
   mutate(mulsum = ifelse(mulsum < 2, "mul", "sum"))
 
-mul_cycle <- cycle %>% filter(mulsum == "mul") %>% select(-mulsum)
+mul_cycle <- cycle_ %>% filter(mulsum == "mul") %>% select(-mulsum)
 
-mul_trend <- trend %>% filter(colti %in% mul_cycle$colti)
+mul_trend <- trend_ %>% filter(colti %in% mul_cycle$colti)
 
 mul <- as.matrix(mul_cycle[,1:67]) * as.matrix(mul_trend[,1:67]) %>%
   as_data_frame
@@ -95,14 +95,17 @@ mul$colti <- mul_cycle$colti
 mul <- mul %>% separate(colti, c("CVEMUN", "banco"), sep = "_")
 
 
-sum_cycle <- cycle %>% filter(mulsum == "sum") %>% select(-mulsum)
-sum_trend <- trend %>% filter(colti %in% sum_cycle$colti)
+sum_cycle <- cycle_ %>% filter(mulsum == "sum") %>% select(-mulsum)
+sum_trend <- trend_ %>% filter(colti %in% sum_cycle$colti)
 
 sumadas <- as.matrix(sum_cycle[,1:67]) + as.matrix(sum_trend[,1:67]) %>%
   as_data_frame 
 sumadas$colti <- sum_cycle$colti
 sumadas <- sumadas %>% separate(colti, c("CVEMUN", "banco"), sep = "_")
 
+
+#
+x11_positivas  <- bind_rows(sumadas, mul)
 x11_tentativas <- bind_rows(sumadas, mul)
 
 
@@ -154,11 +157,12 @@ spr_final <- spr_final_tent %>%
   spread(fecha, trans, fill = 0) %>% 
   bind_rows(corte_sust)
 
-# write_csv(spr_final, 
-#   "../data/cnbv/processed/municipios_select_x11.csv")
+write_csv(spr_final,
+  "../data/cnbv/processed/municipios_select_x11.csv")
 
 
 # spr_final (en vez de read_csv... ) 
+
 cnbv_input_ <- read_csv("municipios_select_x11.csv" %>% 
       file.path("../data/cnbv/processed", .)) %>% 
   gather(fecha, cnbv_x11, starts_with("20"), convert = TRUE) %>% 
@@ -187,7 +191,7 @@ write_csv(cnbv_input,
 
 
 ##############################################################
-#### Separar en otro archivo 
+
 
 metros_input <- read_csv("zonas_metro_estado_ok.csv" %>% 
       file.path("../data/referencias", .)) %>% 
@@ -201,7 +205,6 @@ metros_input <- read_csv("zonas_metro_estado_ok.csv" %>%
 
 write_csv(metros_input, 
   "../data/cnbv/processed/zonas_metro_x11_input.csv")
-
 
 estados_input <- cnbv_input %>%
   mutate(CVEENT = CVEMUN %>% str_sub(1, 2)) %>% select(-CVEMUN) %>% 

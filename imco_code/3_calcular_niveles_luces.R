@@ -7,13 +7,13 @@ library(RColorBrewer)
 pibe_14 <- read_csv("../data/bie/processed/pibe.csv") %>% 
   filter(año == "2014-12-01")
 
-muns_acteco <- read_csv("mun_luces_175.csv" %>% 
-      file.path("../data/viirs/processed_tables", .)) %>% 
+muns_acteco <- read_csv("../data/viirs/processed" %>% 
+      file.path("mun_luces_175.csv"), 
+      col_types = "ccdddd") %>% 
   mutate(CVEENT = CVEMUN %>% str_sub(1, 2)) %>% 
   left_join(pibe_14 %>% select(CVEENT, Estado, pibe), by="CVEENT") %>% 
   group_by(CVEENT, Estado) %>% 
-  mutate(ae_loc = pibe*LUMEN_loc/sum(LUMEN_loc), 
-         ae_175 = pibe*x175_loc/sum(x175_loc)) %>% 
+  mutate(ae_175 = pibe*x175_loc/sum(x175_loc)) %>% 
   ungroup 
 
 write_csv(muns_acteco %>% select(-pibe, -CVEENT), 
@@ -45,7 +45,8 @@ gg_lineup <- edo_acteco_ %>%
   ggplot(aes(x175_loc, pibe, color = Estado)) + 
     geom_point() + 
     geom_smooth(method = "lm", color = "cornflowerblue", se=FALSE) +
-    scale_x_log10("Luminosidad (escala log)", labels = . %>% divide_by(1e3)) +
+    scale_x_log10("Luminosidad (escala log)", 
+        labels = . %>% divide_by(1e3)) +
     scale_y_log10("PIBE (escala log)", labels = . %>% divide_by(1e3)) + 
     scale_color_manual(values = brewer.pal(8, "Dark2") %>% rep(4)) +
     geom_text_repel(aes(label = Estado)) + 
@@ -56,17 +57,19 @@ ggsave(plot = gg_lineup,
     "../visualization/figures/scatter_luces_log.png", 
     width = 16, height = 9, dpi = 100)
 
-
-
-muns_metro <- read_csv("zonas_metro_estado_ok.csv" %>% 
-    file.path("../data/referencias", .)) %>% 
+muns_metro <- read_csv("../data/referencias" %>% file.path(
+  "zonas_metro_estado_ok.csv")) %>% 
+  mutate(CVEMET = str_pad(CVEMET, 3, "left", "0"),
+         CVEENT = str_pad(CVEENT, 2, "left", "0"),
+         CVEMUN = str_pad(CVEMUN, 5, "left", "0")) %>% 
   select(CVEMET, CVEENT, CVEMUN, zona_metro = nombre_corto)
 
-acteco_metro <- muns_acteco %>% 
+acteco_metro <- muns_acteco %>% select(-CVEENT, -Estado) %>% 
   right_join(muns_metro, by="CVEMUN") %>% 
+  rename(ae_loc = x175_loc) %>% 
   group_by(CVEENT, CVEMET, zona_metro) %>% 
   summarize_at(.funs = funs(sum), 
-    .cols = vars(ae_loc, ae_175, LUMEN_loc, LUMEN, area, area_loc))
+    .cols = vars(ae_loc, ae_175, area, area_loc))
 
 write_csv(acteco_metro, 
   "../data/resultados/acteco/por_zonas_metro.csv")

@@ -65,8 +65,8 @@ write_csv(metros_eco_2,
 edo_0 <- read_csv("../data/bie/processed/pibe.csv") %>% 
   filter(año == "2014-12-01") %>% rename(ae_175 = pibe)
 
-edo_crec <- read_csv("selecto_estado.csv" %>% 
-  file.path("../data/resultados/crecimiento", .))
+edo_crec <- read_csv("../data/resultados/crecimiento" %>% file.path(
+  "selecto_estado_martes.csv"))
 
 edo_eco <- aplicar_crecimiento(edo_0, edo_crec, 
     c("CVEENT", "Estado"))

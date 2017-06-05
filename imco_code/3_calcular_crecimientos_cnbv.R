@@ -1,12 +1,12 @@
 # Diego Villamil, OPI
 # CDMX, 2 de enero de 2017
 
-
 library(broom)
 
 itaee <- read_csv("../data/bie/processed/itaee.csv") %>% 
   select(trimestre = fecha, CVEENT, Estado, itaee = original)
-cnbv <- read_csv("../data/cnbv/processed/x11_selecto_estados_martes.csv") %>%
+cnbv <- read_csv("../data/cnbv/processed" %>% file.path(
+  "x11_selecto_estados_martes.csv")) %>%
   select(trimestre, CVEENT, atm_1 = atm_selecto)
 
 
@@ -131,13 +131,13 @@ write_csv(estado_fit,
 
 metro_acumulado <- metro_fit %>%
   mutate(año = year(trimestre), 
-         uno_mas = 1 + crec_fit) %>% 
+    uno_mas = 1 + crec_fit) %>% 
   group_by(CVEENT, CVEMET, zona_metro) %>% arrange(trimestre) %>% 
-  mutate(prod_4 = uno_mas*lag(uno_mas)*lag(uno_mas,2)*lag(uno_mas,3)) %>% 
+  mutate(
+    prod_4 = uno_mas*lag(uno_mas)*lag(uno_mas,2)*lag(uno_mas,3)) %>% 
   ungroup %>% 
   group_by(CVEENT, CVEMET, zona_metro, año) %>% 
   summarize(acum_anual = sum(prod_4)/4)
-
 
 
 View(metro_acumulado)

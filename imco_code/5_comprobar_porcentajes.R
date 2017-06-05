@@ -16,9 +16,8 @@ metros_ref <- read_csv("zonas_metro_estado_ok.csv" %>%
     file.path("../data/referencias", .)) %>% 
     select(CVEMET, zona_metro = nombre_corto, CVEMUN, CVEENT)
 
-metros_ae <- read_csv("selecto_zm_edo.csv" %>% 
-  file.path("../data/resultados/integrado", .), 
-  col_types = "cccDnn") %>% 
+metros_ae <- read_csv("../data/resultados/integrado" %>% file.path(
+    "selecto_zm_edo_martes.csv"), col_types = "cccDnn") %>% 
   select(trimestre, CVEENT, CVEMET, zona_metro, acteco)
 
 
