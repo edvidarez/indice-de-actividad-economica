@@ -53,7 +53,6 @@ MB_frame <- MB_frame_ %>%
   rename(bancomer = `BBVA Bancomer`, banamex = Banamex)
 
 
-
 MB_x11 <- MB_frame %>% # filter(tipo == "transacciones_atm") %>% 
   mutate(CVEMUN = str_sub(cvegeo, 1, 5)) %>% 
   select(-tipo, -colonia, -cvegeo) %>% 
@@ -66,60 +65,59 @@ MB_x11 <- MB_frame %>% # filter(tipo == "transacciones_atm") %>%
 write_csv(MB_x11, "../data/cnbv/processed/por_municipio_x11.csv")
 
 
-## Y después agregar por municipio
+# Este código se usó anteriormente para agrupar municipios. #
 
-# Por si es el caso
-MB_frame <- fread("../data/cnbv/processed/por_localidad.csv", 
-  colClasses = c("integer", "integer", "character", 
-          "character", "NULL", "Date", "integer")) %>% 
-  mutate(CVEMUN = str_sub(cvegeo, 1, 5)) %>% 
-  setkey(fecha, CVEMUN, tipo)
-
-
-MB_muns_ <- MB_frame %>% 
-  group_by(fecha, CVEMUN, tipo) %>% 
-  summarize_at(vars(valor, `BBVA Bancomer`, Santander), 
-      funs(. %>% sum(na.rm = TRUE))) %>% 
-  mutate_at(vars(Santander, `BBVA Bancomer`), 
-      funs(. %>% {.*(tipo == "transacciones_atm")})) %>% 
-  mutate(valor = valor - Santander - `BBVA Bancomer`) %>% 
-  select(-Santander, -`BBVA Bancomer`) %>% 
-  spread(tipo, valor, fill = 0) %>% 
-  rename(atm_1 = transacciones_atm) %>% 
-  mutate(trimestre = floor_date(fecha %>% ymd, "quarter") %>% 
-      add(2 %>% months)) 
-
-MB_muns <- MB_muns_ %>% 
-  group_by(trimestre, CVEMUN) %>% 
-  summarize(atm_1 = sum(atm_1, na.rm = T), 
-      n_atm = max(n_atm, na.rm = T)) %>% 
-  filter(CVEMUN != "blanc")
-  
-write_csv(MB_muns, "../data/cnbv/processed/por_municipio.csv")  
-
-
-# Por ciudad  
-
-MB_metros <- read_csv("zonas_metro_estado_ok.csv" %>% 
-    file.path("../data/referencias/", .), col_types = "iccccc") %>%  
-  mutate(CVEMET = CVEMET %>% str_pad(3, "left", "0"), 
-         CVEMUN = CVEMUN %>% str_pad(5, "left", "0"), 
-         CVEENT = CVEENT %>% str_pad(2, "left", "0")) %>% 
-  inner_join(MB_muns, by = "CVEMUN") %>% 
-  group_by(trimestre, CVEENT, CVEMET, nombre_corto, zona_met) %>% 
-  summarize_at(vars(atm_1, n_atm), funs(. %>% sum(na.rm = T)))
-  
-write_csv(MB_metros, "../data/cnbv/processed/por_zonas_metro.csv")
-
-
-# Por estado
-
-MB_estados <- MB_muns %>% 
-  mutate(CVEENT = str_sub(CVEMUN, 1, 2)) %>% 
-  group_by(trimestre, CVEENT) %>% 
-  summarize_at(vars(atm_1, n_atm), funs(. %>% sum(na.rm = T)))
-
-write_csv(MB_estados, "../data/cnbv/processed/por_estados.csv")
+# MB_frame <- fread("../data/cnbv/processed/por_localidad.csv", 
+#   colClasses = c("integer", "integer", "character", 
+#           "character", "NULL", "Date", "integer")) %>% 
+#   mutate(CVEMUN = str_sub(cvegeo, 1, 5)) %>% 
+#   setkey(fecha, CVEMUN, tipo)
+# 
+# 
+# MB_muns_ <- MB_frame %>% 
+#   group_by(fecha, CVEMUN, tipo) %>% 
+#   summarize_at(vars(valor, `BBVA Bancomer`, Santander), 
+#       funs(. %>% sum(na.rm = TRUE))) %>% 
+#   mutate_at(vars(Santander, `BBVA Bancomer`), 
+#       funs(. %>% {.*(tipo == "transacciones_atm")})) %>% 
+#   mutate(valor = valor - Santander - `BBVA Bancomer`) %>% 
+#   select(-Santander, -`BBVA Bancomer`) %>% 
+#   spread(tipo, valor, fill = 0) %>% 
+#   rename(atm_1 = transacciones_atm) %>% 
+#   mutate(trimestre = floor_date(fecha %>% ymd, "quarter") %>% 
+#       add(2 %>% months)) 
+# 
+# MB_muns <- MB_muns_ %>% 
+#   group_by(trimestre, CVEMUN) %>% 
+#   summarize(atm_1 = sum(atm_1, na.rm = T), 
+#       n_atm = max(n_atm, na.rm = T)) %>% 
+#   filter(CVEMUN != "blanc")
+#   
+# write_csv(MB_muns, "../data/cnbv/processed/por_municipio.csv")  
+# 
+# 
+# # Por ciudad  
+# 
+# MB_metros <- read_csv("zonas_metro_estado_ok.csv" %>% 
+#     file.path("../data/referencias/", .), col_types = "iccccc") %>%  
+#   mutate(CVEMET = CVEMET %>% str_pad(3, "left", "0"), 
+#          CVEMUN = CVEMUN %>% str_pad(5, "left", "0"), 
+#          CVEENT = CVEENT %>% str_pad(2, "left", "0")) %>% 
+#   inner_join(MB_muns, by = "CVEMUN") %>% 
+#   group_by(trimestre, CVEENT, CVEMET, nombre_corto, zona_met) %>% 
+#   summarize_at(vars(atm_1, n_atm), funs(. %>% sum(na.rm = T)))
+#   
+# write_csv(MB_metros, "../data/cnbv/processed/por_zonas_metro.csv")
+# 
+# 
+# # Por estado
+# 
+# MB_estados <- MB_muns %>% 
+#   mutate(CVEENT = str_sub(CVEMUN, 1, 2)) %>% 
+#   group_by(trimestre, CVEENT) %>% 
+#   summarize_at(vars(atm_1, n_atm), funs(. %>% sum(na.rm = T)))
+# 
+# write_csv(MB_estados, "../data/cnbv/processed/por_estados.csv")
 
 
 

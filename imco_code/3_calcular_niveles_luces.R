@@ -3,6 +3,7 @@
 
 library(ggrepel)
 library(RColorBrewer)
+filter <- dplyr::filter
 
 pibe_14 <- read_csv("../data/bie/processed/pibe.csv") %>% 
   filter(año == "2014-12-01")
@@ -10,7 +11,8 @@ pibe_14 <- read_csv("../data/bie/processed/pibe.csv") %>%
 muns_acteco <- read_csv("mun_luces_175.csv" %>% 
       file.path("../data/viirs/processed_tables", .)) %>% 
   mutate(CVEENT = CVEMUN %>% str_sub(1, 2)) %>% 
-  left_join(pibe_14 %>% select(CVEENT, Estado, pibe), by="CVEENT") %>% 
+  left_join(by="CVEENT", 
+      pibe_14 %>% select(CVEENT, Estado, pibe)) %>% 
   group_by(CVEENT, Estado) %>% 
   mutate(ae_loc = pibe*LUMEN_loc/sum(LUMEN_loc), 
          ae_175 = pibe*x175_loc/sum(x175_loc)) %>% 
@@ -58,12 +60,15 @@ ggsave(plot = gg_lineup,
 
 
 
-muns_metro <- read_csv("zonas_metro_estado_ok.csv" %>% 
-    file.path("../data/referencias", .)) %>% 
+muns_metro <- read_csv("../data/referencias" %>% file.path(
+      "zonas_metro_estado_ok.csv")) %>% 
+  mutate(CVEMET = CVEMET %>% str_pad(3, "left", "0"),
+      CVEENT = CVEENT %>% str_pad(2, "left", "0"),
+      CVEMUN = CVEMUN %>% str_pad(5, "left", "0")) %>% 
   select(CVEMET, CVEENT, CVEMUN, zona_metro = nombre_corto)
 
 acteco_metro <- muns_acteco %>% 
-  right_join(muns_metro, by="CVEMUN") %>% 
+  right_join(muns_metro, by=c("CVEMUN", "CVEENT")) %>% 
   group_by(CVEENT, CVEMET, zona_metro) %>% 
   summarize_at(.funs = funs(sum), 
     .cols = vars(ae_loc, ae_175, LUMEN_loc, LUMEN, area, area_loc))

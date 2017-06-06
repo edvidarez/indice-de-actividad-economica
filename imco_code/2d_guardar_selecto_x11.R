@@ -2,8 +2,13 @@
 # CDMX, 15 de enero de 2017
 
 
+
 # Empata las series de x11 con el predictor correspondiente. 
-con_tabla <- FALSE
+con_tabla <- FALSE 
+
+# Se puede descargar de S3 con 
+# aws s3 cp s3://opi-data-science/play/imco/predictor_x11_selecto_estatal_corregido.csv
+
 
 if (!con_tabla) {
   muns_selecto <- read.csv("../data/cnbv/processed/predictor_x11_selecto_estatal_corregido.csv", 

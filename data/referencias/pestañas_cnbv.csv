@@ -8,7 +8,7 @@
 7," Contratos Ctas Transac Trad     ","cuentas_tradicionales","FALSE","FALSE"
 8," Num de Sucursales","sucursales","FALSE","FALSE"
 9," Num de Contratos de TC          ","tarjetasCrédito","FALSE","FALSE"
-10," Num de Cajeros Automaticos ","n_atm","FALSE",TRUE
+10," Num de Cajeros Automaticos ","n_atm","FALSE","TRUE"
 11," Num de TPV                      ","tpv","FALSE","FALSE"
 12," Num de Transac en Cajeros Aut","transacciones_atm","TRUE","TRUE"
 13," Num de Est con TPV              ","establecimientos_tpv","FALSE","FALSE"

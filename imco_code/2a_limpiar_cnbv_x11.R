@@ -70,7 +70,7 @@ cycle <- lapply(l1[!is.err], . %>% {.$series$d10}) %>%
 trend$colti <- rownames(trend)
 
 colnames(cycle) <- fechas
-cycle$colti<-rownames(cycle)
+cycle$colti < -rownames(cycle)
 
 cycle$mulsum <- cycle[,1:67] %>% apply(1, . %>% abs %>% max)
 
@@ -117,7 +117,7 @@ spr_final_tent <- spr_final_tent_ %>%
 
 write_csv(spr_final_tent, 
   "../data/cnbv/processed/municipios_todos_x11.csv")
-
+# En S3 se llama municipios_x11_preinput.csv.
 
 
 # Comprobar los x11 generados y las fuentes. 
@@ -163,7 +163,8 @@ cnbv_input_ <- read_csv("municipios_select_x11.csv" %>%
       bancomer_x11 = bancomer,
       menosbancomer_x11 = valor - bancomer, 
       sinbancomer_x11 = banamex + otros) %>% 
-  filter(!str_detect(CVEMUN, "bla"), fecha < "2016-10-01")
+  filter(!str_detect(CVEMUN, "bla")) %>% 
+  filter(fecha < "2016-10-01")
 cnbv_input <- cnbv_input_ %>% 
   mutate(trimestre = fecha %>% ymd %>% floor_date("quarter") %>% 
       add(2 %>% months)) %>% 
