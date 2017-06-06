@@ -11,10 +11,10 @@
 #    proyecciones del shapefile y ráster para que coincidan. 
 # 4. Continuar con este script. 
 
-
 library(rgdal)
 
-areas_shape <- function (shape) {  # Los applies se ven complicators.
+areas_shape <- function (shape) {  
+  # Los applies se ven complicators.
   # Shape es una estructura, de listas de estructuras.
   areas_ <- shape@polygons %>% 
     lapply(. %>% slot("Polygons") %>% 
@@ -59,9 +59,11 @@ locs_shp <- readOGR("../data/inegi/marco_geo/processed",
 # Los shapefiles de municipios y estados no son necesarios para el
 # análisis.  Para correrlos, hay que antes cargarlos en QGIS como se 
 # hizo con las localidades. 
+
 muns_shp <- readOGR("../data/inegi/marco_geo/processed",
   "datos_municipios",  stringsAsFactors = FALSE)
-# edos_shp <- readOGR("../data/inegi/marco_geo/processed", 
+
+# edos_shp <- readOGR("../data/inegi/marco_geo/processed",
 #   "datos_estados",     stringsAsFactors = FALSE)
 
 
@@ -69,7 +71,7 @@ muns_shp <- readOGR("../data/inegi/marco_geo/processed",
 
 locs_data <- datos_shape(locs_shp, "localidad") %>% 
   rename(CVELOC = CVEGEO) %>% 
-  select(CVELOC, nombre, LUMEN = luz_sum, area, x175) 
+  select(CVELOC, nombre, area, x175) 
 
 # Descomentar, 
 # edos_data <- datos_shape(edos_shp, "estado") %>% 
@@ -78,7 +80,7 @@ locs_data <- datos_shape(locs_shp, "localidad") %>%
 # 
 muns_data <- datos_shape(muns_shp, "municipio") %>%
   rename(CVEMUN = CVEGEO) %>%
-  select(CVEMUN, nombre, LUMEN = luz_sum, area, x175)
+  select(CVEMUN, nombre, area, x175)
 
 
 
@@ -89,7 +91,7 @@ municipios_datos <- muns_data %>%
   left_join(by = "CVEMUN", locs_data %>%
     mutate(CVEMUN = str_sub(CVELOC, 1, 5)) %>%
     group_by(CVEMUN) %>%
-    summarize_at(vars(LUMEN, area, x175), funs(loc = sum))
+    summarize_at(vars(area, x175), funs(loc = sum))
   )
 #     
 # estados_datos <- edos_data %>% 
@@ -102,10 +104,12 @@ municipios_datos <- muns_data %>%
 
 # 4. Escribir tablas
 
-write_csv(locs_data, "../data/viirs/processed_tables/locs_luces_175.csv")
+write_csv(locs_data, 
+    "../data/viirs/processed/locs_luces_175.csv")
 
-write_csv(municipios_datos, "../data/viirs/processed_tables/mun_luces_175.csv")
-# 
+write_csv(municipios_datos, 
+      "../data/viirs/processed/mun_luces_175.csv")
+
 # write_csv(estados_datos, "../data/viirs/processed_tables/edos_luces_175.csv")
 
 

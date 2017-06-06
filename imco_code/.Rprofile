@@ -1,4 +1,3 @@
-
 library(stringr)
 suppressMessages(library(data.table))
 suppressMessages(library(lubridate))
@@ -9,3 +8,4 @@ library(ggplot2)
 suppressMessages(library(dplyr))
 suppressMessages(library(magrittr))
 
+filter <- dplyr::filter

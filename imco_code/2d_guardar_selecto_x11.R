@@ -2,17 +2,14 @@
 # CDMX, 15 de enero de 2017
 
 
-
 # Empata las series de x11 con el predictor correspondiente. 
-con_tabla <- FALSE 
-
-# Se puede descargar de S3 con 
-# aws s3 cp s3://opi-data-science/play/imco/predictor_x11_selecto_estatal_corregido.csv
-
+con_tabla <- FALSE
 
 if (!con_tabla) {
-  muns_selecto <- read.csv("../data/cnbv/processed/predictor_x11_selecto_estatal_corregido.csv", 
-  colClasses = c("character", "character", "character", "numeric"), stringsAsFactors = FALSE)
+  muns_selecto <- read.csv(
+    "../data/cnbv/processed/predictor_x11_selecto_estatal_corregido.csv", 
+    colClasses = c("character", "character", "character", "numeric"), 
+    stringsAsFactors = FALSE)
 } else {
 #   predictores <- read_csv("../data/referencias/series_x11_cnbv.csv") %>%
 #   select(CVEENT, Estado, predictor_x11) %>% 
@@ -37,8 +34,8 @@ estados_selecto <- muns_selecto %>%
 write_csv(estados_selecto, 
   "../data/cnbv/processed/x11_selecto_estados_martes.csv")
 
-metros_selecto <- read_csv("zonas_metro_estado_ok.csv" %>%  
-      file.path("../data/referencias", .)) %>% 
+metros_selecto <- read_csv(
+      "../data/referencias/zonas_metro_estado_ok.csv") %>% 
   mutate(CVEMET = CVEMET %>% str_pad(3, "left", "0"), 
          CVEMUN = CVEMUN %>% str_pad(5, "left", "0"), 
          CVEENT = CVEENT %>% str_pad(2, "left", "0")) %>% 

@@ -1,43 +1,35 @@
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
-<qgis projectname="" version="2.18.6">
+<qgis projectname="" version="2.18.2">
   <title></title>
   <autotransaction active="0"/>
   <evaluateDefaultValues active="0"/>
   <layer-tree-group expanded="1" checked="Qt::PartiallyChecked" name="">
     <customproperties/>
-    <layer-tree-layer expanded="1" providerKey="delimitedtext" checked="Qt::Checked" id="acteco_zonas_metro20170112152213700" source="file:///home/diego/Code/_general/data_science/imco/src/data/resultados/acteco/por_zonas_metro.csv?type=csv&amp;decimalPoint=,&amp;geomType=none&amp;subsetIndex=no&amp;watchFile=no" name="acteco_zonas_metro">
+    <layer-tree-layer expanded="1" checked="Qt::Checked" id="acteco_zonas_metro20170112152213700" name="acteco_zonas_metro">
       <customproperties/>
     </layer-tree-layer>
-    <layer-tree-layer expanded="0" providerKey="ogr" checked="Qt::Checked" id="zonas_metro_conapo_disueltas20170112151624448" source="/home/diego/Code/_general/data_science/imco/data/processed/shapefiles/zonas_metro_conapo_disueltas.shp" name="zonas_metro_conapo_disueltas">
+    <layer-tree-layer expanded="1" checked="Qt::Checked" id="zonas_metro_conapo_disueltas20170112151624448" name="zonas_metro_conapo_disueltas">
       <customproperties/>
     </layer-tree-layer>
-    <layer-tree-layer expanded="1" providerKey="ogr" checked="Qt::Unchecked" id="ZM_201020170112150806994" source="/home/diego/Code/_general/data_science/imco/src/data/conapo/zonas_metro/ZM_2010.shp" name="datos_metros">
+    <layer-tree-layer expanded="1" checked="Qt::Unchecked" id="ZM_201020170112150806994" name="datos_metros">
       <customproperties/>
     </layer-tree-layer>
-    <layer-tree-layer expanded="0" providerKey="gdal" checked="Qt::Unchecked" id="enero_17520170605203917657" source="/home/diego/Code/_general/data_science/imco/imco_playground/qgis/localidades/enero_175.tif" name="enero_175">
+    <layer-tree-layer expanded="1" checked="Qt::Unchecked" id="datos_localidades20161215171155530" name="datos_localidades">
       <customproperties/>
     </layer-tree-layer>
-    <layer-tree-layer expanded="0" providerKey="gdal" checked="Qt::Unchecked" id="luminosidad_mexico20170605203614100" source="/home/diego/Code/_general/data_science/imco/src/data/viirs/raw_raster/final/luminosidad_mexico.tif" name="luces_enero">
+    <layer-tree-layer expanded="1" checked="Qt::Checked" id="datos_estados20161216103147418" name="datos_estados">
       <customproperties/>
     </layer-tree-layer>
-    <layer-tree-layer expanded="1" providerKey="ogr" checked="Qt::Checked" id="datos_localidades20161215171155530" source="/home/diego/Code/_general/data_science/imco/src/data/inegi/marco_geo/processed/datos_localidades.shp" name="datos_localidades">
+    <layer-tree-layer expanded="0" checked="Qt::Unchecked" id="datos_municipios20161215171554020" name="datos_municipios">
       <customproperties/>
     </layer-tree-layer>
-    <layer-tree-layer expanded="1" providerKey="ogr" checked="Qt::Unchecked" id="datos_estados20161216103147418" source="/home/diego/Code/_general/data_science/imco/src/data/inegi/marco_geo/processed/datos_estados.shp" name="datos_estados">
+    <layer-tree-layer expanded="0" checked="Qt::Unchecked" id="log_viirs20170105182924959" name="log_viirs">
       <customproperties/>
     </layer-tree-layer>
-    <layer-tree-layer expanded="0" providerKey="ogr" checked="Qt::Unchecked" id="datos_municipios20161215171554020" source="/home/diego/Code/_general/data_science/imco/src/data/inegi/marco_geo/processed/datos_municipios.shp" name="datos_municipios">
-      <customproperties>
-        <property key="showFeatureCount" value="1"/>
-      </customproperties>
-    </layer-tree-layer>
-    <layer-tree-layer expanded="0" providerKey="gdal" checked="Qt::Unchecked" id="log_viirs20170105182924959" source="/home/diego/Code/_general/data_science/imco/src/data/viirs/processed_raster/log_viirs.tif" name="log_viirs">
+    <layer-tree-layer expanded="0" checked="Qt::Unchecked" id="SVDNB_201412_vcmslcfg_avg_rad20170105180446627" name="SVDNB_201412_vcmslcfg.avg_rad">
       <customproperties/>
     </layer-tree-layer>
-    <layer-tree-layer expanded="0" providerKey="gdal" checked="Qt::Unchecked" id="SVDNB_201412_vcmslcfg_avg_rad20170105180446627" source="/home/diego/Code/_general/data_science/imco/src/data/viirs/raw_raster/final/SVDNB_201412_vcmslcfg.avg_rade9.tif" name="SVDNB_201412_vcmslcfg.avg_rad">
-      <customproperties/>
-    </layer-tree-layer>
-    <layer-tree-layer expanded="1" providerKey="" checked="Qt::Unchecked" id="OpenLayers_plugin_layer20170105182652575" source="/home/diego/Code/_general/data_science/imco/src/imco_code" name="Google Streets">
+    <layer-tree-layer expanded="1" checked="Qt::Unchecked" id="OpenLayers_plugin_layer20170105182652575" name="Google Streets">
       <customproperties/>
     </layer-tree-layer>
   </layer-tree-group>
@@ -45,10 +37,10 @@
   <mapcanvas>
     <units>meters</units>
     <extent>
-      <xmin>-11013973.79987356811761856</xmin>
-      <ymin>1474451.59112836490385234</ymin>
-      <xmax>-10782725.33729764819145203</xmax>
-      <ymax>1620315.27657186449505389</ymax>
+      <xmin>-13247022.35049000941216946</xmin>
+      <ymin>1575413.20922451838850975</ymin>
+      <xmax>-9547046.94927529059350491</xmax>
+      <ymax>3909232.1763205099850893</ymax>
     </extent>
     <rotation>0</rotation>
     <projections>1</projections>
@@ -71,7 +63,6 @@
       <layer_coordinate_transform destAuthId="EPSG:3857" srcAuthId="EPSG:3857" srcDatumTransform="-1" destDatumTransform="-1" layerid="OpenLayers_plugin_layer20170105182636012"/>
       <layer_coordinate_transform destAuthId="EPSG:3857" srcAuthId="EPSG:4326" srcDatumTransform="-1" destDatumTransform="-1" layerid="datos_estados20161216102604372"/>
       <layer_coordinate_transform destAuthId="EPSG:3857" srcAuthId="USER:100000" srcDatumTransform="-1" destDatumTransform="-1" layerid="ZM_201020170112150806994"/>
-      <layer_coordinate_transform destAuthId="EPSG:3857" srcAuthId="EPSG:4326" srcDatumTransform="-1" destDatumTransform="-1" layerid="luminosidad_mexico20170605203614100"/>
       <layer_coordinate_transform destAuthId="EPSG:3857" srcAuthId="EPSG:3857" srcDatumTransform="-1" destDatumTransform="-1" layerid="OpenStreetMap20161215214550624"/>
       <layer_coordinate_transform destAuthId="EPSG:3857" srcAuthId="EPSG:4326" srcDatumTransform="-1" destDatumTransform="-1" layerid="tope_50020161215235243658"/>
       <layer_coordinate_transform destAuthId="EPSG:3857" srcAuthId="EPSG:3857" srcDatumTransform="-1" destDatumTransform="-1" layerid="OpenLayers_plugin_layer20161215210216676"/>
@@ -82,7 +73,6 @@
       <layer_coordinate_transform destAuthId="EPSG:3857" srcAuthId="EPSG:4326" srcDatumTransform="-1" destDatumTransform="-1" layerid="tope_20020161215213338484"/>
       <layer_coordinate_transform destAuthId="EPSG:3857" srcAuthId="EPSG:4326" srcDatumTransform="-1" destDatumTransform="-1" layerid="tope_20020161215214851257"/>
       <layer_coordinate_transform destAuthId="EPSG:3857" srcAuthId="EPSG:3857" srcDatumTransform="-1" destDatumTransform="-1" layerid="OpenLayers_plugin_layer20161215210313084"/>
-      <layer_coordinate_transform destAuthId="EPSG:3857" srcAuthId="EPSG:4326" srcDatumTransform="-1" destDatumTransform="-1" layerid="enero_17520170605203917657"/>
       <layer_coordinate_transform destAuthId="EPSG:3857" srcAuthId="EPSG:4326" srcDatumTransform="-1" destDatumTransform="-1" layerid="log_viirs20170105182924959"/>
       <layer_coordinate_transform destAuthId="EPSG:3857" srcAuthId="EPSG:4326" srcDatumTransform="-1" destDatumTransform="-1" layerid="tope_500_220161216005200899"/>
       <layer_coordinate_transform destAuthId="EPSG:3857" srcAuthId="EPSG:4326" srcDatumTransform="-1" destDatumTransform="-1" layerid="luz_05_17520161216121121480"/>
@@ -103,8 +93,6 @@
       <item>ZM_201020170112150806994</item>
       <item>zonas_metro_conapo_disueltas20170112151624448</item>
       <item>acteco_zonas_metro20170112152213700</item>
-      <item>luminosidad_mexico20170605203614100</item>
-      <item>enero_17520170605203917657</item>
     </custom-order>
   </layer-tree-canvas>
   <legend updateDrawingOrder="true">
@@ -113,8 +101,8 @@
         <legendlayerfile isInOverview="0" layerid="acteco_zonas_metro20170112152213700" visible="1"/>
       </filegroup>
     </legendlayer>
-    <legendlayer drawingOrder="-1" open="false" checked="Qt::Checked" name="zonas_metro_conapo_disueltas" showFeatureCount="0">
-      <filegroup open="false" hidden="false">
+    <legendlayer drawingOrder="-1" open="true" checked="Qt::Checked" name="zonas_metro_conapo_disueltas" showFeatureCount="0">
+      <filegroup open="true" hidden="false">
         <legendlayerfile isInOverview="0" layerid="zonas_metro_conapo_disueltas20170112151624448" visible="1"/>
       </filegroup>
     </legendlayer>
@@ -123,27 +111,17 @@
         <legendlayerfile isInOverview="0" layerid="ZM_201020170112150806994" visible="0"/>
       </filegroup>
     </legendlayer>
-    <legendlayer drawingOrder="-1" open="false" checked="Qt::Unchecked" name="enero_175" showFeatureCount="0">
-      <filegroup open="false" hidden="false">
-        <legendlayerfile isInOverview="0" layerid="enero_17520170605203917657" visible="0"/>
-      </filegroup>
-    </legendlayer>
-    <legendlayer drawingOrder="-1" open="false" checked="Qt::Unchecked" name="luces_enero" showFeatureCount="0">
-      <filegroup open="false" hidden="false">
-        <legendlayerfile isInOverview="0" layerid="luminosidad_mexico20170605203614100" visible="0"/>
-      </filegroup>
-    </legendlayer>
-    <legendlayer drawingOrder="-1" open="true" checked="Qt::Checked" name="datos_localidades" showFeatureCount="0">
+    <legendlayer drawingOrder="-1" open="true" checked="Qt::Unchecked" name="datos_localidades" showFeatureCount="0">
       <filegroup open="true" hidden="false">
-        <legendlayerfile isInOverview="0" layerid="datos_localidades20161215171155530" visible="1"/>
+        <legendlayerfile isInOverview="0" layerid="datos_localidades20161215171155530" visible="0"/>
       </filegroup>
     </legendlayer>
-    <legendlayer drawingOrder="-1" open="true" checked="Qt::Unchecked" name="datos_estados" showFeatureCount="0">
+    <legendlayer drawingOrder="-1" open="true" checked="Qt::Checked" name="datos_estados" showFeatureCount="0">
       <filegroup open="true" hidden="false">
-        <legendlayerfile isInOverview="0" layerid="datos_estados20161216103147418" visible="0"/>
+        <legendlayerfile isInOverview="0" layerid="datos_estados20161216103147418" visible="1"/>
       </filegroup>
     </legendlayer>
-    <legendlayer drawingOrder="-1" open="false" checked="Qt::Unchecked" name="datos_municipios" showFeatureCount="1">
+    <legendlayer drawingOrder="-1" open="false" checked="Qt::Unchecked" name="datos_municipios" showFeatureCount="0">
       <filegroup open="false" hidden="false">
         <legendlayerfile isInOverview="0" layerid="datos_municipios20161215171554020" visible="0"/>
       </filegroup>
@@ -202,7 +180,7 @@
         <ymax>32.71865356900002553</ymax>
       </extent>
       <id>SVDNB_201412_vcmslcfg_avg_rad20170105180446627</id>
-      <datasource>../data/viirs/raw_raster/final/SVDNB_201412_vcmslcfg.avg_rade9.tif</datasource>
+      <datasource>../data/viirs/raw_raster/SVDNB_201412_vcmslcfg.avg_rad.tif</datasource>
       <keywordList>
         <value></value>
       </keywordList>
@@ -245,7 +223,7 @@
       </pipe>
       <blendMode>0</blendMode>
     </maplayer>
-    <maplayer simplifyAlgorithm="0" minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" readOnly="0" geometry="Polygon" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
+    <maplayer simplifyAlgorithm="0" minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" readOnly="0" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Polygon" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
       <id>ZM_201020170112150806994</id>
       <datasource>../data/conapo/zonas_metro/ZM_2010.shp</datasource>
       <keywordList>
@@ -265,9 +243,19 @@
         </spatialrefsys>
       </srs>
       <provider encoding="System">ogr</provider>
+      <previewExpression>COALESCE( "CVE_ENT", '&lt;NULL>' )</previewExpression>
       <vectorjoins/>
       <layerDependencies/>
       <expressionfields/>
+      <defaults>
+        <default field="CVE_ENT" expression=""/>
+        <default field="NOM_MUN" expression=""/>
+        <default field="CVE_MUN1" expression=""/>
+        <default field="CVE_SUN" expression=""/>
+        <default field="NOM_SUN" expression=""/>
+        <default field="NOM_ENT" expression=""/>
+        <default field="POB_2010" expression=""/>
+      </defaults>
       <map-layer-style-manager current="">
         <map-layer-style name=""/>
       </map-layer-style-manager>
@@ -291,9 +279,6 @@
           <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
         </edittype>
         <edittype widgetv2type="TextEdit" name="POB_2010">
-          <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
-        </edittype>
-        <edittype widgetv2type="TextEdit" name="jun_count">
           <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
         </edittype>
       </edittypes>
@@ -345,7 +330,7 @@
         <multilineenabled fieldname="" on=""/>
         <selectedonly on=""/>
       </labelattributes>
-      <annotationform>.</annotationform>
+      <annotationform></annotationform>
       <aliases>
         <alias field="CVE_ENT" index="0" name=""/>
         <alias field="NOM_MUN" index="1" name=""/>
@@ -354,7 +339,6 @@
         <alias field="NOM_SUN" index="4" name=""/>
         <alias field="NOM_ENT" index="5" name=""/>
         <alias field="POB_2010" index="6" name=""/>
-        <alias field="jun_count" index="7" name=""/>
       </aliases>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
@@ -371,10 +355,10 @@
           <column width="-1" hidden="1" type="actions"/>
         </columns>
       </attributetableconfig>
-      <editform>.</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>.</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -383,17 +367,6 @@
         <rowstyles/>
         <fieldstyles/>
       </conditionalstyles>
-      <defaults>
-        <default field="CVE_ENT" expression=""/>
-        <default field="NOM_MUN" expression=""/>
-        <default field="CVE_MUN1" expression=""/>
-        <default field="CVE_SUN" expression=""/>
-        <default field="NOM_SUN" expression=""/>
-        <default field="NOM_ENT" expression=""/>
-        <default field="POB_2010" expression=""/>
-        <default field="jun_count" expression=""/>
-      </defaults>
-      <previewExpression>COALESCE( "CVE_ENT", '&lt;NULL>' )</previewExpression>
     </maplayer>
     <maplayer minimumScale="0" maximumScale="1e+08" readOnly="0" geometry="No geometry" type="vector" hasScaleBasedVisibilityFlag="0">
       <id>acteco_zonas_metro20170112152213700</id>
@@ -416,9 +389,21 @@
       </srs>
       <customproperties/>
       <provider encoding="System">delimitedtext</provider>
+      <previewExpression>COALESCE("CVEENT", '&lt;NULL>')||', '||COALESCE("CVEMET", '&lt;NULL>')||', '||COALESCE("zona_metro", '&lt;NULL>')||', '||COALESCE("ae_loc", '&lt;NULL>')||', '||COALESCE("ae_175", '&lt;NULL>')||', '||COALESCE("LUMEN_loc", '&lt;NULL>')||', '||COALESCE("LUMEN", '&lt;NULL>')||', '||COALESCE("area", '&lt;NULL>')||', '||COALESCE("area_loc", '&lt;NULL>')</previewExpression>
       <vectorjoins/>
       <layerDependencies/>
       <expressionfields/>
+      <defaults>
+        <default field="CVEENT" expression=""/>
+        <default field="CVEMET" expression=""/>
+        <default field="zona_metro" expression=""/>
+        <default field="ae_loc" expression=""/>
+        <default field="ae_175" expression=""/>
+        <default field="LUMEN_loc" expression=""/>
+        <default field="LUMEN" expression=""/>
+        <default field="area" expression=""/>
+        <default field="area_loc" expression=""/>
+      </defaults>
       <map-layer-style-manager current="">
         <map-layer-style name=""/>
       </map-layer-style-manager>
@@ -451,7 +436,7 @@
           <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
         </edittype>
       </edittypes>
-      <annotationform>.</annotationform>
+      <annotationform></annotationform>
       <aliases>
         <alias field="CVEENT" index="0" name=""/>
         <alias field="CVEMET" index="1" name=""/>
@@ -480,10 +465,10 @@
           <column width="-1" hidden="1" type="actions"/>
         </columns>
       </attributetableconfig>
-      <editform>.</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>.</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -492,20 +477,8 @@
         <rowstyles/>
         <fieldstyles/>
       </conditionalstyles>
-      <defaults>
-        <default field="CVEENT" expression=""/>
-        <default field="CVEMET" expression=""/>
-        <default field="zona_metro" expression=""/>
-        <default field="ae_loc" expression=""/>
-        <default field="ae_175" expression=""/>
-        <default field="LUMEN_loc" expression=""/>
-        <default field="LUMEN" expression=""/>
-        <default field="area" expression=""/>
-        <default field="area_loc" expression=""/>
-      </defaults>
-      <previewExpression>COALESCE("CVEENT", '&lt;NULL>')||', '||COALESCE("CVEMET", '&lt;NULL>')||', '||COALESCE("zona_metro", '&lt;NULL>')||', '||COALESCE("ae_loc", '&lt;NULL>')||', '||COALESCE("ae_175", '&lt;NULL>')||', '||COALESCE("LUMEN_loc", '&lt;NULL>')||', '||COALESCE("LUMEN", '&lt;NULL>')||', '||COALESCE("area", '&lt;NULL>')||', '||COALESCE("area_loc", '&lt;NULL>')</previewExpression>
     </maplayer>
-    <maplayer simplifyAlgorithm="0" minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" readOnly="0" geometry="Polygon" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
+    <maplayer simplifyAlgorithm="0" minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" readOnly="0" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Polygon" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
       <extent>
         <xmin>-118.36511435365144962</xmin>
         <ymin>14.53209837011367966</ymin>
@@ -531,9 +504,20 @@
         </spatialrefsys>
       </srs>
       <provider encoding="System">ogr</provider>
+      <previewExpression>COALESCE( "CVE_ENT", '&lt;NULL>' )</previewExpression>
       <vectorjoins/>
       <layerDependencies/>
       <expressionfields/>
+      <defaults>
+        <default field="CVE_ENT" expression=""/>
+        <default field="NOM_ENT" expression=""/>
+        <default field="luz_count" expression=""/>
+        <default field="luz_sum" expression=""/>
+        <default field="luz_max" expression=""/>
+        <default field="luz_min" expression=""/>
+        <default field="count" expression=""/>
+        <default field="175_sum" expression=""/>
+      </defaults>
       <map-layer-style-manager current="">
         <map-layer-style name=""/>
       </map-layer-style-manager>
@@ -837,19 +821,8 @@ def my_form_open(dialog, layer, feature):
         <rowstyles/>
         <fieldstyles/>
       </conditionalstyles>
-      <defaults>
-        <default field="CVE_ENT" expression=""/>
-        <default field="NOM_ENT" expression=""/>
-        <default field="luz_count" expression=""/>
-        <default field="luz_sum" expression=""/>
-        <default field="luz_max" expression=""/>
-        <default field="luz_min" expression=""/>
-        <default field="count" expression=""/>
-        <default field="175_sum" expression=""/>
-      </defaults>
-      <previewExpression>COALESCE( "CVE_ENT", '&lt;NULL>' )</previewExpression>
     </maplayer>
-    <maplayer simplifyAlgorithm="0" minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" readOnly="0" geometry="Polygon" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
+    <maplayer simplifyAlgorithm="0" minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" readOnly="0" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Polygon" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
       <id>datos_localidades20161215171155530</id>
       <datasource>../data/inegi/marco_geo/processed/datos_localidades.shp</datasource>
       <keywordList>
@@ -869,9 +842,21 @@ def my_form_open(dialog, layer, feature):
         </spatialrefsys>
       </srs>
       <provider encoding="System">ogr</provider>
+      <previewExpression>COALESCE( "CVE_ENT", '&lt;NULL>' )</previewExpression>
       <vectorjoins/>
       <layerDependencies/>
       <expressionfields/>
+      <defaults>
+        <default field="CVE_ENT" expression=""/>
+        <default field="CVE_MUN" expression=""/>
+        <default field="CVE_LOC" expression=""/>
+        <default field="NOM_LOC" expression=""/>
+        <default field="200_sum" expression=""/>
+        <default field="500_sum" expression=""/>
+        <default field="luz_sum" expression=""/>
+        <default field="count" expression=""/>
+        <default field="175_sum" expression=""/>
+      </defaults>
       <map-layer-style-manager current="">
         <map-layer-style name=""/>
       </map-layer-style-manager>
@@ -886,6 +871,12 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
         </edittype>
         <edittype widgetv2type="TextEdit" name="NOM_LOC">
+          <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
+        </edittype>
+        <edittype widgetv2type="TextEdit" name="200_sum">
+          <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
+        </edittype>
+        <edittype widgetv2type="TextEdit" name="500_sum">
           <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
         </edittype>
         <edittype widgetv2type="TextEdit" name="luz_sum">
@@ -1123,14 +1114,16 @@ def my_form_open(dialog, layer, feature):
         <alias field="CVE_MUN" index="1" name=""/>
         <alias field="CVE_LOC" index="2" name=""/>
         <alias field="NOM_LOC" index="3" name=""/>
-        <alias field="luz_sum" index="4" name=""/>
-        <alias field="count" index="5" name=""/>
-        <alias field="175_sum" index="6" name=""/>
+        <alias field="200_sum" index="4" name=""/>
+        <alias field="500_sum" index="5" name=""/>
+        <alias field="luz_sum" index="6" name=""/>
+        <alias field="count" index="7" name=""/>
+        <alias field="175_sum" index="8" name=""/>
       </aliases>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions default="-1"/>
-      <attributetableconfig actionWidgetStyle="dropDown" sortExpression="&quot;CVE_ENT&quot;" sortOrder="0">
+      <attributetableconfig actionWidgetStyle="dropDown" sortExpression="&quot;NOM_LOC&quot;" sortOrder="0">
         <columns>
           <column width="-1" hidden="0" type="field" name="CVE_ENT"/>
           <column width="-1" hidden="0" type="field" name="CVE_MUN"/>
@@ -1139,9 +1132,9 @@ def my_form_open(dialog, layer, feature):
           <column width="-1" hidden="1" type="actions"/>
           <column width="-1" hidden="0" type="field" name="luz_sum"/>
           <column width="-1" hidden="0" type="field" name="200_sum"/>
-          <column width="175" hidden="0" type="field" name="500_sum"/>
+          <column width="-1" hidden="0" type="field" name="500_sum"/>
           <column width="-1" hidden="0" type="field" name="count"/>
-          <column width="121" hidden="0" type="field" name="02_175_sum"/>
+          <column width="-1" hidden="0" type="field" name="02_175_sum"/>
         </columns>
       </attributetableconfig>
       <editform>.</editform>
@@ -1172,18 +1165,8 @@ def my_form_open(dialog, layer, feature):
         <rowstyles/>
         <fieldstyles/>
       </conditionalstyles>
-      <defaults>
-        <default field="CVE_ENT" expression=""/>
-        <default field="CVE_MUN" expression=""/>
-        <default field="CVE_LOC" expression=""/>
-        <default field="NOM_LOC" expression=""/>
-        <default field="luz_sum" expression=""/>
-        <default field="count" expression=""/>
-        <default field="175_sum" expression=""/>
-      </defaults>
-      <previewExpression>COALESCE( "CVE_ENT", '&lt;NULL>' )</previewExpression>
     </maplayer>
-    <maplayer simplifyAlgorithm="0" minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" readOnly="0" geometry="Polygon" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
+    <maplayer simplifyAlgorithm="0" minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" readOnly="0" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Polygon" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
       <extent>
         <xmin>-118.36511435365144962</xmin>
         <ymin>14.53209837011365479</ymin>
@@ -1209,9 +1192,21 @@ def my_form_open(dialog, layer, feature):
         </spatialrefsys>
       </srs>
       <provider encoding="System">ogr</provider>
+      <previewExpression>COALESCE( "CVE_ENT", '&lt;NULL>' )</previewExpression>
       <vectorjoins/>
       <layerDependencies/>
       <expressionfields/>
+      <defaults>
+        <default field="CVE_ENT" expression=""/>
+        <default field="CVE_MUN" expression=""/>
+        <default field="NOM_MUN" expression=""/>
+        <default field="200_sum" expression=""/>
+        <default field="500_sum" expression=""/>
+        <default field="luz_sum" expression=""/>
+        <default field="count" expression=""/>
+        <default field="175_sum" expression=""/>
+        <default field="log_mean" expression=""/>
+      </defaults>
       <map-layer-style-manager current="">
         <map-layer-style name=""/>
       </map-layer-style-manager>
@@ -1241,12 +1236,6 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
         </edittype>
         <edittype widgetv2type="TextEdit" name="log_mean">
-          <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
-        </edittype>
-        <edittype widgetv2type="TextEdit" name="175_sum_1">
-          <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
-        </edittype>
-        <edittype widgetv2type="TextEdit" name="jun_count">
           <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
         </edittype>
       </edittypes>
@@ -1685,13 +1674,11 @@ def my_form_open(dialog, layer, feature):
         <alias field="count" index="6" name=""/>
         <alias field="175_sum" index="7" name=""/>
         <alias field="log_mean" index="8" name=""/>
-        <alias field="175_sum_1" index="9" name=""/>
-        <alias field="jun_count" index="10" name=""/>
       </aliases>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions default="-1"/>
-      <attributetableconfig actionWidgetStyle="dropDown" sortExpression="&quot;CVE_ENT&quot;" sortOrder="0">
+      <attributetableconfig actionWidgetStyle="dropDown" sortExpression="&quot;NOM_MUN&quot;" sortOrder="0">
         <columns>
           <column width="-1" hidden="0" type="field" name="CVE_ENT"/>
           <column width="-1" hidden="0" type="field" name="CVE_MUN"/>
@@ -1733,70 +1720,6 @@ def my_form_open(dialog, layer, feature):
         <rowstyles/>
         <fieldstyles/>
       </conditionalstyles>
-      <defaults>
-        <default field="CVE_ENT" expression=""/>
-        <default field="CVE_MUN" expression=""/>
-        <default field="NOM_MUN" expression=""/>
-        <default field="200_sum" expression=""/>
-        <default field="500_sum" expression=""/>
-        <default field="luz_sum" expression=""/>
-        <default field="count" expression=""/>
-        <default field="175_sum" expression=""/>
-        <default field="log_mean" expression=""/>
-        <default field="175_sum_1" expression=""/>
-        <default field="jun_count" expression=""/>
-      </defaults>
-      <previewExpression>COALESCE( "CVE_ENT", '&lt;NULL>' )</previewExpression>
-    </maplayer>
-    <maplayer minimumScale="0" maximumScale="1e+08" type="raster" hasScaleBasedVisibilityFlag="0">
-      <extent>
-        <xmin>-118.40765000000000384</xmin>
-        <ymin>14.53209999999999624</ymin>
-        <xmax>-86.71040999999999599</xmax>
-        <ymax>32.71864999999999668</ymax>
-      </extent>
-      <id>enero_17520170605203917657</id>
-      <datasource>../../imco_playground/qgis/localidades/enero_175.tif</datasource>
-      <keywordList>
-        <value></value>
-      </keywordList>
-      <layername>enero_175</layername>
-      <srs>
-        <spatialrefsys>
-          <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-          <srsid>3452</srsid>
-          <srid>4326</srid>
-          <authid>EPSG:4326</authid>
-          <description>WGS 84</description>
-          <projectionacronym>longlat</projectionacronym>
-          <ellipsoidacronym>WGS84</ellipsoidacronym>
-          <geographicflag>true</geographicflag>
-        </spatialrefsys>
-      </srs>
-      <customproperties>
-        <property key="identify/format" value="Value"/>
-      </customproperties>
-      <provider>gdal</provider>
-      <noData>
-        <noDataList bandNo="1" useSrcNoData="1"/>
-      </noData>
-      <map-layer-style-manager current="">
-        <map-layer-style name=""/>
-      </map-layer-style-manager>
-      <pipe>
-        <rasterrenderer gradient="BlackToWhite" opacity="1" alphaBand="-1" type="singlebandgray" grayBand="1">
-          <rasterTransparency/>
-          <contrastEnhancement>
-            <minValue>0.0705663281083107</minValue>
-            <maxValue>0.576422814875841</maxValue>
-            <algorithm>StretchToMinimumMaximum</algorithm>
-          </contrastEnhancement>
-        </rasterrenderer>
-        <brightnesscontrast brightness="0" contrast="0"/>
-        <huesaturation colorizeGreen="128" colorizeOn="0" colorizeRed="255" colorizeBlue="128" grayscaleMode="0" saturation="0" colorizeStrength="100"/>
-        <rasterresampler maxOversampling="2"/>
-      </pipe>
-      <blendMode>0</blendMode>
     </maplayer>
     <maplayer minimumScale="inf" maximumScale="1e+08" type="raster" hasScaleBasedVisibilityFlag="0">
       <extent>
@@ -1849,57 +1772,7 @@ def my_form_open(dialog, layer, feature):
       </pipe>
       <blendMode>0</blendMode>
     </maplayer>
-    <maplayer minimumScale="0" maximumScale="1e+08" type="raster" hasScaleBasedVisibilityFlag="0">
-      <extent>
-        <xmin>-118.3651143536514212</xmin>
-        <ymin>14.53209837011367966</ymin>
-        <xmax>-86.71040527988353119</xmax>
-        <ymax>32.71865357073890124</ymax>
-      </extent>
-      <id>luminosidad_mexico20170605203614100</id>
-      <datasource>../data/viirs/raw_raster/final/luminosidad_mexico.tif</datasource>
-      <keywordList>
-        <value></value>
-      </keywordList>
-      <layername>luces_enero</layername>
-      <srs>
-        <spatialrefsys>
-          <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-          <srsid>3452</srsid>
-          <srid>4326</srid>
-          <authid>EPSG:4326</authid>
-          <description>WGS 84</description>
-          <projectionacronym>longlat</projectionacronym>
-          <ellipsoidacronym>WGS84</ellipsoidacronym>
-          <geographicflag>true</geographicflag>
-        </spatialrefsys>
-      </srs>
-      <customproperties>
-        <property key="identify/format" value="Value"/>
-      </customproperties>
-      <provider>gdal</provider>
-      <noData>
-        <noDataList bandNo="1" useSrcNoData="0"/>
-      </noData>
-      <map-layer-style-manager current="">
-        <map-layer-style name=""/>
-      </map-layer-style-manager>
-      <pipe>
-        <rasterrenderer gradient="BlackToWhite" opacity="1" alphaBand="-1" type="singlebandgray" grayBand="1">
-          <rasterTransparency/>
-          <contrastEnhancement>
-            <minValue>-0.26667132973671</minValue>
-            <maxValue>0.479955754190683</maxValue>
-            <algorithm>StretchToMinimumMaximum</algorithm>
-          </contrastEnhancement>
-        </rasterrenderer>
-        <brightnesscontrast brightness="0" contrast="0"/>
-        <huesaturation colorizeGreen="128" colorizeOn="0" colorizeRed="255" colorizeBlue="128" grayscaleMode="0" saturation="0" colorizeStrength="100"/>
-        <rasterresampler maxOversampling="2"/>
-      </pipe>
-      <blendMode>0</blendMode>
-    </maplayer>
-    <maplayer simplifyAlgorithm="0" minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" readOnly="0" geometry="Polygon" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
+    <maplayer simplifyAlgorithm="0" minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" readOnly="0" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Polygon" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
       <extent>
         <xmin>-117.26157218292107132</xmin>
         <ymin>15.9638453909785003</ymin>
@@ -1925,11 +1798,28 @@ def my_form_open(dialog, layer, feature):
         </spatialrefsys>
       </srs>
       <provider encoding="System">ogr</provider>
+      <previewExpression>COALESCE( "CVE_ENT", '&lt;NULL>' )</previewExpression>
       <vectorjoins>
         <join joinFieldName="CVEMET" targetFieldName="CVE_SUN" memoryCache="1" joinLayerId="acteco_zonas_metro20170112152213700"/>
       </vectorjoins>
       <layerDependencies/>
       <expressionfields/>
+      <defaults>
+        <default field="CVE_ENT" expression=""/>
+        <default field="NOM_MUN" expression=""/>
+        <default field="CVE_MUN1" expression=""/>
+        <default field="CVE_SUN" expression=""/>
+        <default field="NOM_SUN" expression=""/>
+        <default field="NOM_ENT" expression=""/>
+        <default field="acteco_zonas_metro_CVEENT" expression=""/>
+        <default field="acteco_zonas_metro_zona_metro" expression=""/>
+        <default field="acteco_zonas_metro_ae_loc" expression=""/>
+        <default field="acteco_zonas_metro_ae_175" expression=""/>
+        <default field="acteco_zonas_metro_LUMEN_loc" expression=""/>
+        <default field="acteco_zonas_metro_LUMEN" expression=""/>
+        <default field="acteco_zonas_metro_area" expression=""/>
+        <default field="acteco_zonas_metro_area_loc" expression=""/>
+      </defaults>
       <map-layer-style-manager current="">
         <map-layer-style name=""/>
       </map-layer-style-manager>
@@ -2279,7 +2169,6 @@ def my_form_open(dialog, layer, feature):
       <SingleCategoryDiagramRenderer diagramType="Histogram" sizeLegend="0" attributeLegend="1">
         <DiagramCategory penColor="#000000" labelPlacementMethod="XHeight" penWidth="0" diagramOrientation="Up" sizeScale="0,0,0,0,0,0" minimumSize="0" barWidth="5" penAlpha="255" maxScaleDenominator="1e+08" backgroundColor="#ffffff" transparency="0" width="15" scaleDependency="Area" backgroundAlpha="255" angleOffset="1440" scaleBasedVisibility="0" enabled="0" height="15" lineSizeScale="0,0,0,0,0,0" sizeType="MM" lineSizeType="MM" minScaleDenominator="inf">
           <fontProperties description="Noto Sans,11,-1,0,50,0,0,0,0,0" style=""/>
-          <attribute field="" color="#000000" label=""/>
         </DiagramCategory>
         <symbol alpha="1" clip_to_extent="1" type="marker" name="sizeSymbol">
           <layer pass="0" class="SimpleMarker" locked="0">
@@ -2305,7 +2194,7 @@ def my_form_open(dialog, layer, feature):
         </symbol>
       </SingleCategoryDiagramRenderer>
       <DiagramLayerSettings yPosColumn="-1" showColumn="-1" linePlacementFlags="10" placement="0" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
-      <annotationform>.</annotationform>
+      <annotationform></annotationform>
       <aliases>
         <alias field="CVE_ENT" index="0" name=""/>
         <alias field="NOM_MUN" index="1" name=""/>
@@ -2344,10 +2233,10 @@ def my_form_open(dialog, layer, feature):
           <column width="-1" hidden="0" type="field" name="acteco_zonas_metro_area_loc"/>
         </columns>
       </attributetableconfig>
-      <editform>.</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>.</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -2372,23 +2261,6 @@ def my_form_open(dialog, layer, feature):
         <rowstyles/>
         <fieldstyles/>
       </conditionalstyles>
-      <defaults>
-        <default field="CVE_ENT" expression=""/>
-        <default field="NOM_MUN" expression=""/>
-        <default field="CVE_MUN1" expression=""/>
-        <default field="CVE_SUN" expression=""/>
-        <default field="NOM_SUN" expression=""/>
-        <default field="NOM_ENT" expression=""/>
-        <default field="acteco_zonas_metro_CVEENT" expression=""/>
-        <default field="acteco_zonas_metro_zona_metro" expression=""/>
-        <default field="acteco_zonas_metro_ae_loc" expression=""/>
-        <default field="acteco_zonas_metro_ae_175" expression=""/>
-        <default field="acteco_zonas_metro_LUMEN_loc" expression=""/>
-        <default field="acteco_zonas_metro_LUMEN" expression=""/>
-        <default field="acteco_zonas_metro_area" expression=""/>
-        <default field="acteco_zonas_metro_area_loc" expression=""/>
-      </defaults>
-      <previewExpression>COALESCE( "CVE_ENT", '&lt;NULL>' )</previewExpression>
     </maplayer>
   </projectlayers>
   <properties>
