@@ -2,6 +2,7 @@
 # CDMX, a 16 de diciembre de 2016. 
 
   
+  
 aplicar_crecimiento <- function(base, crec, columnas) {
   # base <- metros_0; crec <- metros_crec; 
   # columnas <- c("CVEENT", "CVEMET", "zona_metro")

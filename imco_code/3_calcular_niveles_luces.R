@@ -4,6 +4,7 @@
 library(ggrepel)
 library(RColorBrewer)
 
+
 pibe_14 <- read_csv("../data/bie/processed/pibe.csv") %>% 
   filter(año == "2014-12-01")
 
@@ -66,10 +67,9 @@ muns_metro <- read_csv("../data/referencias" %>% file.path(
 
 acteco_metro <- muns_acteco %>% select(-CVEENT, -Estado) %>% 
   right_join(muns_metro, by="CVEMUN") %>% 
-  rename(ae_loc = x175_loc) %>% 
   group_by(CVEENT, CVEMET, zona_metro) %>% 
   summarize_at(.funs = funs(sum), 
-    .cols = vars(ae_loc, ae_175, area, area_loc))
+    .cols = vars(ae_175, area, area_loc))
 
 write_csv(acteco_metro, 
   "../data/resultados/acteco/por_zonas_metro.csv")

@@ -69,8 +69,8 @@ write_csv(MB_grupos,
   "../data/cnbv/processed/grupos_municipios_prex11.csv")
 
 
-## La siguiente parte consiste en agregar por municipio, 
-# Se comenta temporalmente. 
+## La siguiente parte consiste en agregar los municipio por estado y cd. 
+# Se comenta ya que no fue decisivo en el algoritmo final. 
 
 # Por si es el caso
 # MB_frame <- fread("../data/cnbv/processed/por_localidad.csv", 

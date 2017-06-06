@@ -11,11 +11,10 @@
 #    proyecciones del shapefile y ráster para que coincidan. 
 # 4. Continuar con este script. 
 
-
 library(rgdal)
 
-
-areas_shape <- function (shape) {  # Los applies se ven complicators.
+areas_shape <- function (shape) {  
+  # Los applies se ven complicators.
   # Shape es una estructura, de listas de estructuras.
   areas_ <- shape@polygons %>% 
     lapply(. %>% slot("Polygons") %>% 
