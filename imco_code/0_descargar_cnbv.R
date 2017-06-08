@@ -5,13 +5,14 @@
 
 # Verificar cuál es el último mes disponible en 
 # http://portafolioinfo.cnbv.gob.mx/PUBLICACIONES/IO/Paginas/bm.aspx
-ultimo_mes <- as.Date("2017-01-01")
+ultimo_mes <- as.Date("2017-03-01")
 
 
 tags_meses <- seq(as.Date("2011-04-01"), ultimo_mes, by="1 month") %>% 
   format("%Y%m")
 
-url_bm <- "http://portafolioinfo.cnbv.gob.mx/PortafolioInformacion/BM_Operativa_%s.xls"
+url_bm <- "http://portafolioinfo.cnbv.gob.mx/" %>% str_c(
+  "PortafolioInformacion/BM_Operativa_%s.xls")
 archivo_bm <- "../data/cnbv/raw/BM_Operativa_%s.xls"
 
 descarga_bm <- function (tag, url_temp, archivo_temp, ...) {

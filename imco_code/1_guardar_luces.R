@@ -83,8 +83,6 @@ muns_data <- datos_shape(muns_shp, "municipio") %>%
   select(CVEMUN, nombre, area, x175)
 
 
-
-
 # 3. Juntar datos. 
 
 municipios_datos <- muns_data %>%
