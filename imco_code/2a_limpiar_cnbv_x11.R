@@ -8,13 +8,14 @@ entrena_filtro <- TRUE  # Primero se entrenan y después se
                         # actualizan los filtros.
 
 empieza_base <- ymd("2011-04-01")  # Verificar en la serie. 
-termina_base <- ymd("2016-10-10")  # De acuerdo al primer modelo. 
+termina_base <- ymd("2016-10-01")  # De acuerdo al primer modelo. 
 
 
 # Leemos la tabla que ya trae la info por municipio de Banamex y
 # Bancomer, generada por Diego
 spr_src <- read_csv("../data/cnbv/processed" %>% file.path(
-    "grupos_municipios_prex11.csv"), col_types = cols()) %>% 
+    "grupos_municipios_prex11.csv"), 
+    col_types = cols("c", "D", "n", "n", "n", "n")) %>% 
   mutate(CVEMUN = CVEMUN %>% str_pad(5, "left", "0")) %>% 
   gather("banco", "trans", bancomer, banamex, valor, otros)
 # Valor es equivalente a total, otros es la diferencia entre éste y 
@@ -38,7 +39,7 @@ spr_x11 <- spr_src %>%
 
 names_ls <- sprintf("%s_%s", spr_x11$CVEMUN, spr_x11$banco)
 termina_col <- if (entrena_filtro) {
-  which(names(spr_x11) == termina_base) 
+  which(names(spr_x11) == as.character(termina_base)) 
   } else { ncol(spr_x11) }
 
 
@@ -46,9 +47,9 @@ termina_col <- if (entrena_filtro) {
 ls1 <- vector(mode = "list", length(names_ls))
 for (i in 1:nrow(spr_x11)) {
   ls1[[i]] <- spr_x11[i, 3:termina_col] %>% t() %>% as.vector() %>% 
-      ts(start = empieza, frequency = 12)
+      ts(start = empieza %>% {c(year(.), month(.))}, frequency = 12)
 }
-names(ls1) <- names_ls1
+names(ls1) <- names_ls
 
 
 static_x11 <- "../data/cnbv/x11_models/static_x11s.RDS"
@@ -60,7 +61,7 @@ if (entrena_filtro) {
   if (not(file.exists(cache_x11))) {
     l1  <- vector("list", length(names_ls))
     st1 <- vector("list", length(names_ls))
-    for (i in 1175:length(names_ls)) {
+    for (i in 1:length(names_ls)) {
       seas_i  <- try (seas(ls1[[i]], x11 = ""))
       if (class(seas_i) != "try-error") {
         l1 [[i]] <- seas_i
@@ -75,29 +76,44 @@ if (entrena_filtro) {
     saveRDS(st1, static_x11)
   } else {
     l1  <- readRDS(cache_x11)
-    st1 <- readRDS(static_x11) 
   }
   
 } else {  # Actualizamos los nuevos datos con los modelos estáticos.
   if (not(file.exists(static_x11))) 
     stop ("No hay lista de modelos estáticos entrenados.")
   
+  
   update_x11 <- "../data/cnbv/x11_models/update_x11s.RDS"
   if (not(file.exists(update_x11))) {
+      
+    # No siguen el mismo orden NAMES_LS que ST1 que se había guardado
+    # anteriormente. 
+    st1 <- readRDS(static_x11)
     
-    
+    l1 <- vector("list", length(names_ls))
+    for (i in seq_along(names_ls)) {
+      nom_i <- names_ls[i]
+      seas_i <- st1[[nom_i]]
+      print (paste(i, nom_i))
+      if (class(seas_i) == "seas") {
+        print ("Actualizando la serie")
+        l1[[i]] <- update(seas_i, x = ls1[[nom_i]]) 
+      } else {
+        l1[[i]] <- list(NULL)
+        class(l1[[i]]) <- "try-error"
+      }
+    }
+    names(l1) <- names_ls
+    saveRDS(l1, update_x11)
   } else {
     l1 <- readRDS(update_x11)
   }
 }
 
 
-
 # Distinguimos las series estacionales exitosas de las que marcaron 
 # error
 is.err <- sapply(l1, class) == "try-error"
-summary(l1[is.err])
-length(summary(l1[is.err]))
 
 
 # También distinguir las que se suman y se multiplican.

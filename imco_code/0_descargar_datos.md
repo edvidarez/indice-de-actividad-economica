@@ -62,7 +62,7 @@ $ gdalwarp -q -cutline ../data/inegi/marco_geo/raw/areas_geoestadisticas_estatal
 Los datos de la NOAA se procesan aparte en QGIS. 
 Topamos a 175 debido a zonas con luminosidad extrema.  (Ver ficha técnica)
 
-0. Empezar nuevo proyecto en QGIS. 
+0. Empezar nuevo proyecto en QGIS como: ../data/qgis/imco_magda.qgs
 1. Abrir capa de ráster del .tif generado en: ../data/viirs/luminosidad_mexico.tif
     - Renombrar como viirs
 2. Aplicar raster-calculator:  viirs * ( viirs <= 175), 

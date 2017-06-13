@@ -6,7 +6,8 @@ ale_x11.R
 0_descargar_viirs.sh
 0_descargar_cnbv.sh
 2a_cnbv_x11_reload.R
-qgis_viirs_marcogeo.q
+qgis_viirs_marcogeo.qgs
+qgis_viirs_marcogeo.qgs~
   
 1b_comparar_luces.R
 

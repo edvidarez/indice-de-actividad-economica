@@ -7,24 +7,33 @@ filter <- dplyr::filter
 
 # Los datos de luces llegan a variar ligeramente con QGIS. 
 # USAR_REFERENCIA para utilizar el dato original.
-usar_referencia <- TRUE
+usar_referencia <- FALSE
 
 
 pibe_14 <- read_csv("../data/bie/processed/pibe.csv") %>% 
   filter(año == "2014-12-01")
 
-archivo_muns <- if (usar_referencia) {
-  "../data/referencias/mun_luces_175.csv"} else {
-  "../data/viirs/processed/mun_luces_175.csv"}
 
-muns_acteco <- read_csv(archivo_muns, 
-      col_types = "ccdddd") %>% 
-  mutate(CVEENT = CVEMUN %>% str_sub(1, 2)) %>% 
-  left_join(by="CVEENT", 
-      pibe_14 %>% select(CVEENT, Estado, pibe)) %>% 
-  group_by(CVEENT, Estado) %>% 
-  mutate(ae_175 = pibe*x175_loc/sum(x175_loc)) %>% 
-  ungroup 
+if (usar_referencia) {
+  muns_acteco <- read_csv("../data/referencias/mun_luces_175.csv",
+        col_types = "ccdddd") %>% 
+    mutate(CVEENT = CVEMUN %>% str_sub(1, 2)) %>% 
+    left_join(by="CVEENT", 
+        pibe_14 %>% select(CVEENT, Estado, pibe)) %>% 
+    group_by(CVEENT, Estado) %>% 
+    mutate(ae_175 = pibe*x175_loc/sum(x175_loc)) %>%
+    ungroup 
+} else {
+  muns_acteco <- read_csv("../data/viirs/processed/mun_luces_175.csv",
+        col_types = "ccdddd") %>% 
+    mutate(CVEENT = CVEMUN %>% str_sub(1, 2)) %>% 
+    left_join(by="CVEENT", 
+        pibe_14 %>% select(CVEENT, Estado, pibe)) %>% 
+    group_by(CVEENT, Estado) %>% 
+    mutate(ae_175 = pibe*x175_loc/sum(x175_loc)) %>%
+    ungroup 
+}
+
 
 write_csv(muns_acteco %>% select(-pibe, -CVEENT), 
   "../data/resultados/acteco/por_municipio.csv")

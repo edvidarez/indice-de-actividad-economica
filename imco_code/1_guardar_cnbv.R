@@ -2,14 +2,13 @@
 # CDMX, 2 de enero de 2017
 
 
-
 dir_cnbv <- "../data/cnbv"
 empieza <- "2011-04-01" %>% as.Date
 termina <- "2017-03-01" %>% as.Date
 
 
 leer_multibanca <- function (pestagna_id, periodo, 
-  output = FALSE, bancos = NULL) {
+      output = FALSE, bancos = NULL) {
   require(zoo)
   require(readxl)
   # Lee archivo de Banca Múltiple
@@ -39,25 +38,40 @@ leer_multibanca <- function (pestagna_id, periodo,
     # output <- FALSE
     # bancos <- c("BBVA Bancomer", "Banamex")
     
-  
-    mb_ <- file.path(dir_cnbv, "raw", "BM_Operativa_%s.xlsx") %>% 
-      sprintf(periodo) %>%
-      read_excel(sheet = nombre_, skip = 1) %>%
-      { names(.)[1:4] <- c("entidad", "cvegeo", "colonia", "valor")
-        as_data_frame(.)} %>%  # set_names[1:4]
-      filter(!is.na(colonia)) %>%  # Los totales por estado
-      slice(-1) %>%  # La primera fila es un total también
-      mutate(
-          entidad = na.locf(entidad),
-          cvegeo  = na.locf(cvegeo) %>% str_sub(4, 13),
-          fecha   = periodo %>% sprintf("%s01", .) %>% ymd,
-          tipo    = nombre_)
+    pestañas_rnm <- c(
+       "Número de Transacciones en Cajeros Automáticos" = 
+            "Num de Transac en Cajeros Aut")
     
-    bancos_ <- intersect(bancos, names(mb_)) %>% sprintf("`%s`", .)
-    mb <- select_(mb_, .dots = union(bancos_, 
-        c("tipo","cvegeo","colonia","fecha","valor")))
+    mb_0 <- file.path(dir_cnbv, "raw", "BM_Operativa_%s.xlsx") %>% 
+      sprintf(periodo) %>%
+      read_excel(sheet = "Hoja1", col_types = c("text", "text", "text",
+        "text", "text", "text", "skip", "text", "numeric", "skip", 
+        "skip")) %>% 
+      select(tipo  = dl_producto_financiero, 
+          cvegeo  = cve_inegi, 
+          colonia = dl_localidad,  # Lo usamos para consistencia. 
+          fecha = cve_periodo, 
+          valor = dat_num_total,
+          entidad = dl_estado, 
+          banco = nombre_publicacion) %>% 
+      mutate(fecha = fecha %>% str_c("01") %>% as.Date("%Y%m%d"),
+          cvegeo = cvegeo %>% str_sub(4, 13), 
+          tipo = tipo %>% str_replace_all(pestañas_rnm)) %>% 
+      filter(tipo == pestagna_id, cvegeo != "L")
+      
+    mb_1 <- mb_0 %>% 
+      group_by(tipo, cvegeo, colonia, fecha, entidad) %>% 
+      summarize_at("valor", . %>% sum(na.rm = TRUE)) %>% 
+      mutate(banco = "valor")
+    
+    mb_2 <- mb_0 %>% 
+      filter(banco %in% bancos) %>% 
+      group_by(tipo, cvegeo, colonia, fecha, entidad, banco) %>% 
+      summarize_at("valor", . %>% sum(na.rm = TRUE))
+    
+    mb <- bind_rows(mb_1, mb_2) %>% 
+      spread(banco, valor)
   }
-  
   return (mb)
 }
 
@@ -77,8 +91,8 @@ MB_frame_ <- expand.grid(pestagnas_df$Nombre, periodos,
 MB_frame <- MB_frame_ %>% 
   bind_rows %>% 
   mutate(tipo = pestagnas_df %$% Alias[match(tipo, Nombre)]) %>% 
-  rename(bancomer = `BBVA Bancomer`, banamex = Banamex)
-
+  rename(bancomer = `BBVA Bancomer`, banamex = Banamex) %>% 
+  filter(!(cvegeo %>% str_detect("blanco")))
 
 MB_x11 <- MB_frame %>% # filter(tipo == "transacciones_atm") %>% 
   mutate(CVEMUN = str_sub(cvegeo, 1, 5)) %>% 
@@ -86,10 +100,9 @@ MB_x11 <- MB_frame %>% # filter(tipo == "transacciones_atm") %>%
   group_by(CVEMUN, fecha) %>% 
   summarize_at(vars(bancomer, banamex, valor),
                funs(. %>% sum(na.rm = T))) %>%
-  mutate(otros = valor - bancomer - banamex)
+  mutate(otros = valor - bancomer - banamex) 
 
-
-write_csv(MB_x11, "../data/cnbv/processed/por_municipio_x11.csv")
+write_csv(MB_x11, "../data/cnbv/processed/grupos_municipios_prex11.csv")
 
 
 
