@@ -16,12 +16,24 @@ aplicar_crecimiento <- function(base, crec, columnas) {
     filter(!is.na(crec_fit)) %>% 
     group_by_(.dots = columnas) %>% 
     mutate(es_2014 = (trimestre >= "2014-12-01") & 
-                 (lag(trimestre) < "2014-12-01"), 
+            (lag(trimestre) < "2014-12-01"), 
         crec_acum = cumprod(1 + crec_fit),
-        crec_14 = sum(crec_acum[es_2014]) %>% replace(. == 0, 1), 
+        crec_14 = sum(crec_acum[es_2014]) %>% 
+            replace(. == 0, 1), 
         acteco = ae_175*crec_acum/crec_14)
+  
   datos[!is.na(datos$crec_fit), "acteco"] <- calc_crec$acteco
   return (datos)
+}
+
+
+crecimiento_vector <- function(crecimiento, base, indice) {
+  if (any(crecimiento %>% is.na)) {
+    warning ("Hay NAs en crecimiento")
+    crecimiento <- crecimiento %>% replace(is.na(.), 0)
+  }
+  crec_0 <- cumprod(1 + crecimiento)
+  crec_1 <- crec_0/crec_0[indice]*base
 }
 
 
@@ -36,11 +48,17 @@ metros_0 <- read_csv("por_zonas_metro.csv" %>%
 metros_crec <- read_csv("selecto_zona_metro_martes.csv" %>% 
   file.path("../data/resultados/crecimiento", .)) %>% 
   mutate(CVEMET = CVEMET %>% str_pad(3, "left", "0"),
-         CVEENT = CVEENT %>% str_pad(2, "left", "0"))  
+         CVEENT = CVEENT %>% str_pad(2, "left", "0")) %>% 
+  filter(!is.na(trimestre))
 
-metros_eco <- aplicar_crecimiento(metros_0, metros_crec, 
-  c("CVEENT", "CVEMET", "zona_metro")) %>% 
-  filter(trimestre <= "2016-01-01")
+cols_crec <- c("CVEENT", "CVEMET", "zona_metro")
+
+metros_eco <- left_join(metros_0, metros_crec, 
+  by = cols_crec) %>% 
+  group_by_(.dots = cols_crec) %>% 
+  arrange_(.dots = cols_crec %>% c("trimestre")) %>% 
+  mutate(acteco = crecimiento_vector(crec_fit, ae_175, 
+              trimestre == "2014-12-01"))
 
 write_csv(metros_eco %>% select(-ae_175), 
   "../data/resultados/integrado/selecto_zm_edo_martes.csv")
@@ -49,16 +67,28 @@ write_csv(metros_eco %>% select(-ae_175),
 # y reportes.  
 metros_eco_2 <- metros_eco %>%
   group_by(trimestre, CVEMET, zona_metro) %>% 
-  summarize(acteco = sum(acteco, na.rm = T)) %>% 
+  summarize(magda = sum(acteco, na.rm = TRUE)) %>% 
   group_by(CVEMET, zona_metro) %>% arrange(trimestre) %>% 
-  rename(magda = acteco) %>% 
-  mutate(var_trim = magda/lag(magda) - 1,   
+  mutate(var_trim  = magda/lag(magda) - 1,   
          var_anual = magda/lag(magda, 4) - 1, 
       anual_acum = (var_anual + lag(var_anual) + 
-          lag(var_anual,2) + lag(var_anual,3))/4) 
+          lag(var_anual,2) + lag(var_anual,3))/4) %>% 
+  arrange(CVEMET, zona_metro)
 
 write_csv(metros_eco_2, 
   "../data/resultados/integrado/selecto_zona_metro_martes.csv")
+
+
+metros_formato <- metros_eco_2 %>% ungroup %>% 
+  select(trimestre, zona_metro, magda, anual_acum) %>% 
+  filter(month(trimestre) == 12) %>% 
+  mutate(año = year(trimestre)) %>% select(-trimestre) %>% 
+  gather("medida", "valor", magda, anual_acum) %>% 
+  filter(!is.na(valor)) %>% 
+  unite("medida_año", medida, año) %>% 
+  spread(medida_año, valor)
+
+write_csv(metros_formato, "../data/resultados/integrado/reportando.csv")  
 
 
 ## Por estado. 

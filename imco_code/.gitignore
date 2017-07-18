@@ -10,5 +10,6 @@ qgis_viirs_marcogeo.qgs
 qgis_viirs_marcogeo.qgs~
   
 1b_comparar_luces.R
+5_comprobar_porcnetajes.R
 
 *temp*

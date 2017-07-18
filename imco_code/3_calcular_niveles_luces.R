@@ -3,20 +3,19 @@
 
 library(ggrepel)
 library(RColorBrewer)
+
 filter <- dplyr::filter
 
-# Los datos de luces llegan a variar ligeramente con QGIS. 
+# Los datos de luces llegan a variar con QGIS. 
 # USAR_REFERENCIA para utilizar el dato original.
-usar_referencia <- FALSE
-
+usar_referencia <- TRUE
 
 pibe_14 <- read_csv("../data/bie/processed/pibe.csv") %>% 
   filter(año == "2014-12-01")
 
-
 if (usar_referencia) {
   muns_acteco <- read_csv("../data/referencias/mun_luces_175.csv",
-        col_types = "ccdddd") %>% 
+        col_types = "ccdddddd") %>% 
     mutate(CVEENT = CVEMUN %>% str_sub(1, 2)) %>% 
     left_join(by="CVEENT", 
         pibe_14 %>% select(CVEENT, Estado, pibe)) %>% 

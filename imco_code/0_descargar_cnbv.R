@@ -8,20 +8,28 @@
 ultimo_mes <- as.Date("2017-03-01")
 
 
-tags_meses <- seq(as.Date("2011-04-01"), ultimo_mes, by="1 month") %>% 
+tags_meses <- seq(as.Date("2011-03-01"), ultimo_mes, by = "1 month") %>% 
   format("%Y%m")
+bm_raw_dir <- "../data/cnbv/raw/"
 
-url_bm <- "http://portafolioinfo.cnbv.gob.mx/" %>% str_c(
-  "PortafolioInformacion/BM_Operativa_%s.xls")
-archivo_bm <- "../data/cnbv/raw/BM_Operativa_%s.xls"
 
-descarga_bm <- function (tag, url_temp, archivo_temp, ...) {
-  url_ <- sprintf(url_temp, tag)
-  archivo <- sprintf(archivo_temp, tag)
-  download.file(url_, archivo, method="curl")
+descarga_bm <- function (fecha_tag, folder) {
+  url_0 <- "http://portafolioinfo.cnbv.gob.mx/PortafolioInformacion/BM_Operativa_%s.xls" %>% sprintf(fecha_tag) 
+  download.file(url_0, method="curl", 
+      destfile = file.path(folder, basename(url_0)))
+
+  # Algunos archivos cambiaron de manera desconocida.
+  # se identifican por el tamaño del archivo, y la corrección es en
+  # la versión de Excel del archivo .xls por .xlsx
+  if (file.size(file.path(folder, basename(url_0))) < 1000) {
+    url_1 <- str_replace(url_0, ".xls$", ".xlsx")
+    download.file(url_1, method="curl", 
+        destfile = file.path(folder, basename(url_1)))
+    file.remove(file.path(folder, basename(url_0)))
+  }
 }
 
-lapply(tags_meses, descarga_bm, url_bm, archivo_bm)
+tmp_var <- lapply(tags_meses, descarga_bm, bm_raw_dir)
 
 
 

@@ -1,4 +1,4 @@
-
+  
 
 
 # Configuración
@@ -7,8 +7,13 @@ En los sitios correspondientes se indica cómo instalarlos.
 
 Algunos paquetes de R se cargan automáticamente al abrir el proyecto. 
 Verificar la instalación previa de stringr, data.table, lubridate, 
-readr, dtplyr, tidyr, ggplot2, dplyr, magrittr. 
+readr, dtplyr, tidyr, ggplot2, dplyr, magrittr.  
   
+Además encontramos funciones que se cruzan entre paquetes.  Por ejemplo,
+filter se confunde de paquetes, por lo que la asignamos en el archivo .Rprofile:
+filter <- dplyr::filter
+contains <- dplyr::contains
+
 
 # Descarga de datos
 Descargamos datos de los siguientes sitios. 
@@ -50,7 +55,7 @@ Guardar en: ../data/viirs/raw/  (Puede tardar varios minutos)
 Descomprimir el archivo y renombrar el que termina con "avg_rade0.tif" como: 
 ../data/viirs/raw/luminosidad_tile1.tif
 
-Para recortar la foto a la República Mexicana ejecuta en terminal,
+Este archivo tiene datos de casi medio hemisferio norte, el siguiente comando recorta la información de la República Mexicana en sistema Linux.  
 $ gdalwarp -q -cutline ../data/inegi/marco_geo/raw/areas_geoestadisticas_estatales.shp \
   -crop_to_cutline --config GDALWARP_IGNORE_BAD_CUTLINE YES \
   "../data/viirs/raw/luminosidad_tile1.tif" \
@@ -70,13 +75,18 @@ Topamos a 175 debido a zonas con luminosidad extrema.  (Ver ficha técnica)
 3. Abrir capas vectoriales de .shp en ../data/inegi/marco_geo/raw/
     - poligonos_localidades_urbanas_y_rurales.shp
     - areas_geoestadisticas_municipales.shp
-4. Guardar capa de localidades y municipios con proyección de ráster
-    - botón derecho > guardar como > General > CRS = EPS:4326, 
+4. Guardar capa de localidades y municipios con la misma proyección del ráster del INEGI.
+    - Esto equivale a cambiar el sistema de coordenadas de referencia CRS (en inglés): CRS = EPSG:4326 - WGS 84,
+    - botón derecho sobre cada capa vectorial > guardar como > cambiar CRS
+      Con el mismo formato .shp en 
       ../data/inegi/marco_geo/processed/datos_localidades.shp
       ../data/inegi/marco_geo/processed/datos_municipios.shp
 5. Habilitar plugin, de zonal-statistics y aplicar función en el menú Raster. 
-    - viirs_175 suma con datos_localidades y datos_municipios.
+    - capa ráster: tope_175 
+    - capa de polígonos: datos_localidades, (después lo mismo con datos_municipios)
     - columna de salida: 175_
+    - estadísticos: únicamente la función Suma
+    
     
     
 # Referencia

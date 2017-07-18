@@ -10,6 +10,7 @@
 #   act_eco del estado
 #   act_eco de las ciudades del estado
 
+
 library(RColorBrewer)
 
 metros_ref <- read_csv("zonas_metro_estado_ok.csv" %>% 
@@ -19,7 +20,6 @@ metros_ref <- read_csv("zonas_metro_estado_ok.csv" %>%
 metros_ae <- read_csv("../data/resultados/integrado" %>% file.path(
     "selecto_zm_edo_martes.csv"), col_types = "cccDnn") %>% 
   select(trimestre, CVEENT, CVEMET, zona_metro, acteco)
-
 
 pibe <- read_csv("../data/bie/processed/pibe.csv") %>% 
   rename(trimestre = año)

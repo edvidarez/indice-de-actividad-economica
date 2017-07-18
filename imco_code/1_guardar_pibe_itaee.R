@@ -1,6 +1,7 @@
 # Diego Villamil, OPI
 # CDMX, 15 de diciembre de 2016
 
+contains <- dplyr::contains
 
 estados <- read_csv("../data/referencias/estados.csv", 
       col_types = cols()) %>% 
