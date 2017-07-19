@@ -1,6 +1,8 @@
 # Diego Villamil, OPI
 # CDMX, 15 de diciembre de 2016
 
+# Leer archivos del PIBE e ITAEE, simplificando los formatos de INEGI.
+
 contains <- dplyr::contains
 
 estados <- read_csv("../data/referencias/estados.csv", 
@@ -8,8 +10,14 @@ estados <- read_csv("../data/referencias/estados.csv",
   mutate(CVEENT = str_pad(cveent, 2, "left", "0")) %>% 
   select(BIE, Estado, CVEENT)
 
-itaee <- read_csv("../data/bie/raw/itaee.csv", skip = 1, 
-      locale = locale(encoding="latin1")) %>% head(-3) %>% 
+itaee_ <- read_csv("../data/bie/raw/itaee.csv", skip = 1, 
+    locale = locale(encoding="latin3")) 
+
+# 
+malas_filas <- itaee_[, 2] %>% {sum(is.na(.))}
+
+itaee <- itaee_ %>% 
+  head(-malas_filas) %>% 
   select(-contains("Variación")) %>% 
   set_names(names(.) %>% 
       str_replace_all("(.*ciclo > | Índice.*)", "")) %>% 
@@ -29,7 +37,7 @@ itaee <- read_csv("../data/bie/raw/itaee.csv", skip = 1,
 
 pibe <- read_csv("../data/bie/raw/pibe.csv", col_types = cols(),
       skip=3, locale=locale(encoding="latin3")) %>% 
-  head(-3) %>% 
+  head(-malas_filas) %>% 
   set_names(names(.) %>% str_replace(" r1.*", "")) %>% 
   gather(Estado, pibe, Aguascalientes:Zacatecas) %>% 
   mutate(año = Periodo %>% str_c("1201") %>% ymd) %>% 
