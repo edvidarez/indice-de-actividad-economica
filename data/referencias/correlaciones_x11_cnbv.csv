@@ -1,0 +1,33 @@
+CVEENT,Estado,predictor_x11,corr_x11,ones,rank
+04,Campeche,otros_x11,0.0145205035674135,1,1
+30,Veracruz,otros_x11,0.343045320256817,1,1
+07,Chiapas,banamex_x11,0.352860383991693,1,1
+27,Tabasco,otros_x11,0.529168453287579,1,1
+32,Zacatecas,otros_x11,0.57554473849914,1,1
+28,Tamaulipas,banamex_x11,0.619274080057405,1,1
+03,Baja California Sur,menosbancomer_x11,0.729929465051641,1,1
+09,Ciudad de México,sinbancomer_x11,0.805567380884989,1,1
+26,Sonora,banamex_x11,0.80949230485681,1,1
+16,Michoacán,banamex_x11,0.826632542083668,1,1
+21,Puebla,sinbancomer_x11,0.834274817963637,1,1
+17,Morelos,banamex_x11,0.848203704124464,1,1
+10,Durango,menosbancomer_x11,0.852694772268576,1,1
+15,México,banamex_x11,0.853492387698949,1,1
+25,Sinaloa,banamex_x11,0.867537976358714,1,1
+18,Nayarit,sinbancomer_x11,0.86925163560993,1,1
+12,Guerrero,banamex_x11,0.872476926135563,1,1
+02,Baja California,banamex_x11,0.873199816986339,1,1
+06,Colima,banamex_x11,0.889938382253119,1,1
+08,Chihuahua,banamex_x11,0.895620602996124,1,1
+29,Tlaxcala,menosbancomer_x11,0.897046747742769,1,1
+20,Oaxaca,banamex_x11,0.922494762930589,1,1
+14,Jalisco,banamex_x11,0.924082168184484,1,1
+05,Coahuila,banamex_x11,0.925150096300875,1,1
+31,Yucatán,todos_x11,0.928332381448279,1,1
+13,Hidalgo,suma_x11,0.935911262668566,1,1
+23,Quintana Roo,banamex_x11,0.944451639627406,1,1
+24,San Luis Potosí,todos_x11,0.94675974878557,1,1
+19,Nuevo León,banamex_x11,0.948488523878908,1,1
+22,Querétaro,banamex_x11,0.962458778455126,1,1
+01,Aguascalientes,banamex_x11,0.971870202066045,1,1
+11,Guanajuato,banamex_x11,0.972507886169688,1,1
