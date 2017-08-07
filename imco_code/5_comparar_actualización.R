@@ -6,8 +6,9 @@
 #     el cálculo que se hizo inicialmente, 
 #     la actualización del índice con nuevos datos y 
 #     la actualización con una recalibración del modelo. 
-# Entonces comparamos los tres, y el agente causal de las diferencias, aka. 
+# Entonces comparamos los tres, y el agente causal de las diferencias, aka.
 # las transacciones de la CNBV. 
+
 
 library(readxl)
 

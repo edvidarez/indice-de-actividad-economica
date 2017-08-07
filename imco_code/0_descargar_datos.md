@@ -8,7 +8,9 @@ En los sitios correspondientes se indica cómo instalarlos.
 Algunos paquetes de R se cargan automáticamente al abrir el proyecto. 
 Verificar la instalación previa de stringr, data.table, lubridate, 
 readr, dtplyr, tidyr, ggplot2, dplyr, magrittr.  
-  
+
+En particular, el paquete `readxl` tiene que estar actualizado, pues algunas funciones rompen el comportamiento. 
+
 Además encontramos funciones que se cruzan entre paquetes.  Por ejemplo,
 filter se confunde de paquetes, por lo que la asignamos en el archivo .Rprofile:
 filter <- dplyr::filter

@@ -3,7 +3,6 @@
 
 # Leer archivos del PIBE e ITAEE, simplificando los formatos de INEGI.
 
-contains <- dplyr::contains
 
 estados <- read_csv("../data/referencias/estados.csv", 
       col_types = cols()) %>% 
@@ -13,7 +12,6 @@ estados <- read_csv("../data/referencias/estados.csv",
 itaee_ <- read_csv("../data/bie/raw/itaee.csv", skip = 1, 
     locale = locale(encoding="latin3")) 
 
-# 
 malas_filas <- itaee_[, 2] %>% {sum(is.na(.))}
 
 itaee <- itaee_ %>% 
@@ -35,7 +33,7 @@ itaee <- itaee_ %>%
   left_join(estados, by = c("estado"="BIE")) %>% select(-estado)
   
 
-pibe <- read_csv("../data/bie/raw/pibe.csv", col_types = cols(),
+pibe <- read_csv("../data/bie/raw/pibe_constantes.csv", col_types = cols(),
       skip=3, locale=locale(encoding="latin3")) %>% 
   head(-malas_filas) %>% 
   set_names(names(.) %>% str_replace(" r1.*", "")) %>% 
@@ -47,7 +45,7 @@ pibe <- read_csv("../data/bie/raw/pibe.csv", col_types = cols(),
 
 
 write_csv(itaee, "../data/bie/processed/itaee.csv")  
-
+  
 write_csv(pibe, "../data/bie/processed/pibe.csv")
 
 

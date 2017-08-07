@@ -1,11 +1,13 @@
 library(dplyr)
 library(seasonal)
-library(purrr)
+# library(purrr)
 
 
-entrena_filtro <- FALSE  # Primero se entrenan y después se
-                        # actualizan los filtros.
+entrena_filtro <- TRUE  # Primero se entrenan (filtro == TRUE) y después 
+                        # se actualizan los filtros.
 
+# El sufijo BASE se refiere al perioddo de entrenamiento. 
+# Incluso con datos nuevos. 
 empieza_base <- ymd("2011-04-01")  # Verificar en la serie. 
 termina_base <- ymd("2016-10-01")  # De acuerdo al primer modelo. 
 
@@ -22,10 +24,12 @@ spr_src <- read_csv("../data/cnbv/processed" %>% file.path(
 # Valor es equivalente a total, otros es la diferencia entre éste y 
 # los otros bancos particulares. 
 
+# Este es sólo para comparar. 
 spr_src_temp <- spr_src %>%
   filter(fecha >= "2011-04-01") %>%
   group_by(CVEENT = CVEMUN %>% str_sub(1,2), banco, fecha) %>%
   summarize(trans = sum(trans, na.rm = T))
+
 
 # Identificamos las que son todas 0, y las quitamos. 
 muns_cero <- spr_src %>% 
@@ -46,7 +50,7 @@ spr_x11 <- spr_src %>%
 names_ls <- sprintf("%s_%s", spr_x11$CVEMUN, spr_x11$banco)
 n_fechas <- if (entrena_filtro) {
   which(names(spr_x11) == as.character(termina_base)) - 2 
-  } else { ncol(spr_x11) - 2 }
+} else { ncol(spr_x11) - 2 }
 
 
 # Lista de series de tiempo por municipio y banco.
@@ -117,9 +121,18 @@ if (entrena_filtro) {
 }
 
 
-# Distinguimos las series estacionales exitosas de las que marcaron 
-# error
-is.err <- sapply(l1, class) == "try-error"
+
+# Al comparar las series resultantes pueden variar de una computadora 
+# a otra
+
+error_rds <- "../data/referencias/errores_x11.rds"
+if (entrena_filtro) {
+  is.err <- sapply(l1, class) == "try-error"
+  saveRDS(is.err, error_rds)
+} else {
+  is.err <- readRDS(error_rds)
+}
+
 
 
 
@@ -142,11 +155,13 @@ cycle_ <- lapply(l1[!is.err], . %>% {.$series$d10}) %>%
 
 cols_series <- length(fechas)
 
-cycle_$mulsum <- cycle_[,1:cols_series] %>% 
+cycle_$mulsum <- cycle_[, 1:cols_series] %>% 
   apply(1, . %>% abs %>% max)
 
 cycle_ <- cycle_ %>%
   mutate(mulsum = ifelse(mulsum < 2, "mul", "sum"))
+
+
 
 
 # Usar transform function.
@@ -174,7 +189,7 @@ sumadas <- as_data_frame(
 #### Escoger series originales o X11 #### 
 
 # Positivas son tentativas
-x11_positivas   <- bind_rows(sumadas, mul)
+x11_positivas <- bind_rows(sumadas, mul)
 
 
 spr_idx <- spr_src %>% select(CVEMUN, banco) %>% unique
@@ -206,7 +221,9 @@ spr_final_prueba <- spr_final_tent %>%
 
 View(spr_final_prueba)
 
-# Comprobar los x11 generados y las fuentes. 
+
+
+### Comprobar los x11 generados y las fuentes. 
 
 cnbv_original <- spr_src %>% 
   mutate_at("fecha", as.character)
@@ -214,7 +231,8 @@ cnbv_original <- spr_src %>%
 cnbv_x11 <- spr_final_tent
 
 comparacion_x11 <- left_join(cnbv_x11, cnbv_original, 
-  by = c("CVEMUN", "banco", "fecha"), suffix = c("_x11", "_or")) %>% 
+      by = c("CVEMUN", "banco", "fecha"), 
+      suffix = c("_x11", "_or")) %>%
   mutate(dif_abs = abs(trans_x11 - trans_or), 
          dif_prc = dif_abs/trans_or)
 
@@ -222,11 +240,14 @@ corte_mun <- comparacion_x11 %>%
   group_by(CVEMUN, banco) %>% 
   summarize(mediana = median(dif_prc, na.rm = TRUE)) 
 
+# Si la mediana de la diferencia porcentual es mayor que 70%,
+# elegimos la serie de SPR_SRC, que es la original. 
 corte_sust <- corte_mun %>% filter(mediana > 0.7) %>% 
   select(CVEMUN, banco) %>% 
   left_join(spr_src, by = c("CVEMUN", "banco")) %>% 
   spread(fecha, trans, fill = 0)
 
+# De lo contrario escogemos las series de SPR_FINAL_TENT. 
 spr_final <- spr_final_tent %>% 
   anti_join(corte_sust, by = c("CVEMUN", "banco")) %>% 
   spread(fecha, trans, fill = 0) %>% 
@@ -273,7 +294,8 @@ gg_prueba <- spr_prueba %>%
   geom_line()
 print(gg_prueba)
 
-ggsave(plot = gg_prueba, "../visualization/figures/cnbv_confiltros.png",
+ggsave(plot = gg_prueba, 
+  "../visualization/figures/cnbv_confiltros.png",
   height = 9, width = 16, dpi = 100)
 
 
