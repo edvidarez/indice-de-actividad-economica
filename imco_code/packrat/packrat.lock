@@ -63,6 +63,11 @@ Version: 1.0.0
 Hash: f4239f89feb7ddc65821e4514e9734ae
 Requires: assertthat, crayon
 
+Package: clipr
+Source: CRAN
+Version: 0.4.1
+Hash: caf20ae357bfa2ed50e0e7db267f69ce
+
 Package: colorspace
 Source: CRAN
 Version: 1.3-2
@@ -72,6 +77,11 @@ Package: crayon
 Source: CRAN
 Version: 1.3.4
 Hash: ff2840dd9b0d563fc80377a5a45510cd
+
+Package: data.table
+Source: CRAN
+Version: 1.11.8
+Hash: 67c877937c790a0cadb71284febb6b34
 
 Package: digest
 Source: CRAN
@@ -88,10 +98,12 @@ GithubRepo: dplyr
 GithubUsername: hadley
 GithubRef: master
 GithubSha1: 4bda9f7a018f6755053524d8dbe464b0a163eee4
-RemoteHost: https://api.github.com
-RemoteRepo: dplyr
-RemoteUsername: hadley
-RemoteSha: 4bda9f7a018f6755053524d8dbe464b0a163eee4
+
+Package: dtplyr
+Source: CRAN
+Version: 0.0.2
+Hash: fde9ccefb3119da988d203a4403ed5ce
+Requires: data.table, dplyr, lazyeval
 
 Package: fansi
 Source: CRAN
@@ -120,6 +132,12 @@ Package: gtable
 Source: CRAN
 Version: 0.2.0
 Hash: cd78381a9d3fea966ac39bd0daaf5554
+
+Package: hms
+Source: CRAN
+Version: 0.4.2
+Hash: b4096a4f6a6736138e9a825c2baaacf0
+Requires: pkgconfig, rlang
 
 Package: labeling
 Source: CRAN
@@ -198,6 +216,12 @@ Version: 0.2.5
 Hash: 8b0c16db10c7e20b70cd37779a673a8b
 Requires: magrittr, rlang, tibble
 
+Package: readr
+Source: CRAN
+Version: 1.2.1
+Hash: 61195cce9bc923473e4175a18c4a0e60
+Requires: BH, R6, Rcpp, clipr, hms, tibble
+
 Package: readxl
 Source: github
 Version: 1.1.0.9000
@@ -207,10 +231,6 @@ GithubRepo: readxl
 GithubUsername: tidyverse
 GithubRef: master
 GithubSha1: 763ca6d42ade5b1ede77d57b41d596b3306ab8a1
-RemoteHost: https://api.github.com
-RemoteRepo: readxl
-RemoteUsername: tidyverse
-RemoteSha: 763ca6d42ade5b1ede77d57b41d596b3306ab8a1
 
 Package: rematch
 Source: CRAN
@@ -237,10 +257,6 @@ GithubRepo: rlang
 GithubUsername: tidyverse
 GithubRef: master
 GithubSha1: a2d5d93794a02290b3cbf22d16d69bd99851da20
-RemoteHost: https://api.github.com
-RemoteRepo: rlang
-RemoteUsername: tidyverse
-RemoteSha: a2d5d93794a02290b3cbf22d16d69bd99851da20
 
 Package: scales
 Source: CRAN
