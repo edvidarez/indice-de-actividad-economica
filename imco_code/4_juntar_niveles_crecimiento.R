@@ -15,12 +15,12 @@ aplicar_crecimiento <- function(base, crec, columnas) {
   calc_crec <- datos %>% 
     filter(!is.na(crec_fit)) %>% 
     group_by_(.dots = columnas) %>% 
-    mutate(es_2014 = (trimestre >= "2014-12-01") & 
-            (lag(trimestre) < "2014-12-01"), 
+    mutate(es= (trimestre >= year_pib) & 
+            (lag(trimestre) < year_pib), 
         crec_acum = cumprod(1 + crec_fit),
-        crec_14 = sum(crec_acum[es_2014]) %>% 
+        crec= sum(crec_acum[es]) %>% 
             replace(. == 0, 1), 
-        acteco = ae_175*crec_acum/crec_14)
+        acteco = ae_175*crec_acum/crec)
   
   datos[!is.na(datos$crec_fit), "acteco"] <- calc_crec$acteco
   return (datos)
@@ -58,7 +58,7 @@ metros_eco <- left_join(metros_0, metros_crec,
   group_by_(.dots = cols_crec) %>% 
   arrange_(.dots = cols_crec %>% c("trimestre")) %>% 
   mutate(acteco = crecimiento_vector(crec_fit, ae_175, 
-              trimestre == "2014-12-01"))
+              trimestre == year_pib))
 
 write_csv(metros_eco %>% select(-ae_175), 
   "../data/resultados/integrado/selecto_zm_edo_martes.csv")
@@ -90,11 +90,65 @@ metros_formato <- metros_eco_2 %>% ungroup %>%
 
 write_csv(metros_formato, "../data/resultados/integrado/reportando.csv")  
 
+## Por municipio 
+muns_0 <- read_csv("por_municipios_acteco_estado_seleccionado.csv" %>% 
+                       file.path("../data/resultados/acteco", .)) %>% 
+  select(CVEMET, CVEENT, zona_metro, ae_175)
+
+muns_crec <- read_csv("selecto_estado_seleccionado.csv" %>% 
+                          file.path("../data/resultados/crecimiento", .)) %>% 
+  filter(!is.na(trimestre)) %>%
+  mutate(zona_metro = NULL ) 
+
+
+cols_crec <- c( "CVEENT","CVEMET")
+
+muns_eco <- left_join(muns_0, muns_crec, 
+                        by = cols_crec) %>% 
+  filter(!is.na(trimestre)) %>%
+  group_by_(.dots = cols_crec) %>% 
+  arrange_(.dots = cols_crec %>% c("trimestre"))
+muns_eco_filtered <- muns_eco %>% filter(trimestre == year_pib)
+muns_eco <- muns_eco %>% filter(
+  CVEMET %in% (muns_eco_filtered$CVEMET %>% unique)
+)
+muns_eco <- muns_eco %>% 
+  mutate(acteco = crecimiento_vector(crec_fit, ae_175, 
+                                     trimestre == year_pib))
+
+write_csv(muns_eco %>% select(-ae_175), 
+          "../data/resultados/integrado/selecto_estado_seleccionado_martes.csv")
+
+# Checar VAR_ANUAL y comparar con CRECIMIENTO_ACUMULADO de INEGI. 
+# y reportes.  
+muns_eco_2 <- muns_eco %>%
+  group_by(trimestre, CVEMET, zona_metro) %>% 
+  summarize(magda = sum(acteco, na.rm = TRUE)) %>% 
+  group_by(CVEMET, zona_metro) %>% arrange(trimestre) %>% 
+  mutate(var_trim  = magda/dplyr::lag(magda) - 1,   
+         var_anual = magda/dplyr::lag(magda, 4) - 1, 
+         anual_acum = (var_anual + dplyr::lag(var_anual) + 
+                         dplyr::lag(var_anual,2) + dplyr::lag(var_anual,3))/4) %>% 
+  arrange(CVEMET, zona_metro)
+
+write_csv(muns_eco_2, 
+          "../data/resultados/integrado/selecto_estado_seleccionado_magda_martes.csv")
+muns_formato <- muns_eco_2 %>% ungroup %>% 
+  select(trimestre, zona_metro, magda, anual_acum) %>% 
+  filter(month(trimestre) == 12) %>% 
+  mutate(año = year(trimestre)) %>% select(-trimestre) %>% 
+  gather("medida", "valor", magda, anual_acum) %>% 
+  filter(!is.na(valor)) %>% 
+  unite("medida_año", medida, año) %>% 
+  spread(medida_año, valor)
+
+write_csv(muns_formato, "../data/resultados/integrado/reportando_estado_seleccionado.csv") 
+
 
 ## Por estado. 
 
 edo_0 <- read_csv("../data/bie/processed/pibe.csv") %>% 
-  filter(año == "2014-12-01") %>% rename(ae_175 = pibe)
+  filter(año == year_pib) %>% rename(ae_175 = pibe)
 
 edo_crec <- read_csv("../data/resultados/crecimiento" %>% file.path(
   "selecto_estado_martes.csv"))
@@ -110,7 +164,7 @@ gg_estados <- edo_eco %>%
     rename(magda = acteco) %>% 
     gather("indice", "valor", itaee, magda, factor_key = TRUE) %>% 
     group_by(Estado, indice) %>% 
-    mutate(valor_ = valor/mean(valor), 
+    mutate(valor_ = valor/mean(valor, na.rm=TRUE ), 
            trimestre = trimestre + months(2)) %>% 
   ggplot(aes(trimestre, valor_)) +
     facet_wrap(~ Estado, nrow = 5) +
@@ -126,6 +180,62 @@ ggsave(plot = gg_estados,
   "../visualization/figures/estados_x11_selecto_v2.eps", 
   width = 16, height = 9, dpi = 100)
 
+edo_sel_0 <- read_csv("../data/bie/processed/pibe.csv") %>% 
+  filter(año == year_pib) %>% rename(ae_175 = pibe)
+#
+edo_sel_crec <- read_csv("../data/resultados/crecimiento" %>% file.path(
+  "selecto_estado_estado_seleccionado.csv")) %>% 
+  rename(CVEMUN = Estado )
+
+edo_sel_eco <- aplicar_crecimiento(edo_sel_0, edo_sel_crec, 
+                               c("CVEENT", "Estado"))
+
+
+
+
+write_csv(edo_sel_eco, 
+          "../data/resultados/integrado/selecto_estado.csv")
+
+
+gg_estados <- edo_sel_eco %>% 
+  rename(magda = acteco) %>% 
+  gather("indice", "valor", itaee, magda, factor_key = TRUE) %>% 
+  group_by(Estado, indice) %>% 
+  mutate(valor_ = valor/mean(valor, na.rm=TRUE), 
+         trimestre = trimestre + months(2)) %>% 
+  ggplot(aes(trimestre, valor_)) +
+  facet_wrap(~ Estado, nrow = 5) +
+  geom_line(aes(color = indice)) + 
+  scale_x_date("") + 
+  scale_y_continuous("") +
+  scale_color_brewer(palette = "Dark2") + 
+  theme(legend.position = c(5/7, 1/7), 
+        axis.text.x = element_text(angle=45, hjust=1))
+print(gg_estados)
+
+ggsave(plot = gg_estados, 
+       "../visualization/figures/estados_x11_selecto_v2.eps", 
+       width = 16, height = 9, dpi = 100)
+
+gg_muns <- muns_eco %>% 
+  rename(magda = acteco) %>% 
+  gather( "valor", magda, factor_key = TRUE) %>% 
+  group_by(Estado, indice) %>% 
+  mutate(valor_ = valor/mean(valor, na.rm=TRUE), 
+         trimestre = trimestre + months(2)) %>% 
+  ggplot(aes(trimestre, valor_)) +
+  facet_wrap(~ Estado, nrow = 5) +
+  geom_line(aes(color = indice)) + 
+  scale_x_date("") + 
+  scale_y_continuous("") +
+  scale_color_brewer(palette = "Dark2") + 
+  theme(legend.position = c(5/7, 1/7), 
+        axis.text.x = element_text(angle=45, hjust=1))
+print(gg_estados)
+
+ggsave(plot = gg_estados, 
+       "../visualization/figures/estados_x11_selecto_v2.eps", 
+       width = 16, height = 9, dpi = 100)
 
 ### Esta gráfica es para las zonas metros ###
 # Hay que modificarla porque ahorita no jala bien. 

@@ -7,7 +7,7 @@ dir_cnbv <- "../data/cnbv"
 # posible diferencia por:  
 #   empieza <- "2011-03-01"
 empieza <- "2011-03-01" %>% as.Date
-termina <- "2017-03-01" %>% as.Date
+termina <- "2018-09-01" %>% as.Date
 
 
 # archivo, pestaña, output, bancos = NULL
@@ -51,20 +51,35 @@ leer_multibanca <- function (pestagna_id, periodo,
       sprintf(periodo)
     
     if ("Hoja1" %in% excel_sheets(archivo_)) {
-      mb_0 <- read_excel(archivo_, sheet = "Hoja1", col_types = 
-          c("text", "text", "text", "text", "text", "text", "skip",
-            "text", "numeric", "skip", "skip")) %>% 
-        select(tipo  = dl_producto_financiero, 
-            cvegeo  = cve_inegi, 
-            colonia = dl_localidad,  # Lo usamos para consistencia. 
-            fecha = cve_periodo, 
-            valor = dat_num_total,
-            entidad = dl_estado, 
-            banco = nombre_publicacion) %>% 
-        mutate(fecha = fecha %>% str_c("01") %>% as.Date("%Y%m%d"),
-            cvegeo = cvegeo %>% str_sub(4, 13), 
-            tipo = tipo %>% str_replace_all(pestañas_rnm)) %>% 
-        filter(tipo == pestagna_id, cvegeo != "L")
+      if (periodo >= ("2018-01-01" %>% as.Date  %>% format("%Y%m"))){
+        mb_0 <- read_excel(archivo_, sheet = "Hoja1", col_types = 
+            c("text", "text", "text", "text", "text", "text", "skip",
+              "text", "numeric", "skip", "skip","skip","skip")) %>% 
+          select(tipo  = dl_producto_financiero, 
+              cvegeo  = cve_inegi, 
+              colonia = dl_localidad,  # Lo usamos para consistencia. 
+              fecha = cve_periodo, 
+              valor = dat_num_total,
+              entidad = dl_estado, 
+              banco = nombre_publicacion) %>% 
+          mutate(fecha = fecha %>% str_c("01") %>% as.Date("%Y%m%d"),
+              cvegeo = cvegeo %>% str_sub(4, 13), 
+              tipo = tipo %>% str_replace_all(pestañas_rnm)) %>% 
+          filter(tipo == pestagna_id, cvegeo != "L")
+      } else {
+        mb_0 <- read_excel(archivo_, sheet = "Hoja1", col_types = c("text", "text", "text", "text", "text", "text", "skip", "text", "numeric", "skip", "skip")) %>% 
+          select(tipo  = dl_producto_financiero, 
+                  cvegeo  = cve_inegi, 
+                  colonia = dl_localidad,  # Lo usamos para consistencia. 
+                  fecha = cve_periodo, 
+                  valor = dat_num_total,
+                  entidad = dl_estado, 
+                  banco = nombre_publicacion) %>% 
+          mutate(fecha = fecha %>% str_c("01") %>% as.Date("%Y%m%d"),
+                  cvegeo = cvegeo %>% str_sub(4, 13), 
+                  tipo = tipo %>% str_replace_all(pestañas_rnm)) %>% 
+          filter(tipo == pestagna_id, cvegeo != "L")
+      }
     } else {
       mb_0 <- read_excel(archivo_, sheet = "Datos", col_types = 
           c("text", "text", "text", "text", "text", "text", "skip",

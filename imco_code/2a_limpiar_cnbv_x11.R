@@ -8,8 +8,8 @@ entrena_filtro <- TRUE  # Primero se entrenan (filtro == TRUE) y después
 
 # El sufijo BASE se refiere al perioddo de entrenamiento. 
 # Incluso con datos nuevos. 
-empieza_base <- ymd("2011-04-01")  # Verificar en la serie. 
-termina_base <- ymd("2016-10-01")  # De acuerdo al primer modelo. 
+empieza_base <- ymd(cnbv_first_month)  # Verificar en la serie. 
+termina_base <- ymd(cnbv_last_month)  # De acuerdo al primer modelo. 
 
 
 # Leemos la tabla que ya trae la info por municipio de Banamex y
@@ -26,7 +26,7 @@ spr_src <- read_csv("../data/cnbv/processed" %>% file.path(
 
 # Este es sólo para comparar. 
 spr_src_temp <- spr_src %>%
-  filter(fecha >= "2011-04-01") %>%
+  filter(fecha >= cnbv_first_month) %>%
   group_by(CVEENT = CVEMUN %>% str_sub(1,2), banco, fecha) %>%
   summarize(trans = sum(trans, na.rm = T))
 
@@ -139,7 +139,7 @@ if (entrena_filtro) {
 # También distinguir las que se suman y se multiplican.
 
 fechas <- spr_src$fecha %>% unique() %>% extract(1:n_fechas)
-# fechas <- fechas[1:68]  # para 2016-10
+fechas <- fechas[1:67]  # para 2016-10
 
 trend_ <- lapply(l1[!is.err], trend) %>%
   {do.call(cbind, .)} %>%
@@ -220,7 +220,13 @@ spr_final_prueba <- spr_final_tent %>%
   summarize(trans = sum(trans, na.rm = T))
 
 View(spr_final_prueba)
+### agregado 17 de nov ...
+spr_final_prueba_muns <- spr_final_tent %>% 
+  group_by(CVEMUN ,banco, fecha) %>% 
+  summarize(trans = sum(trans, na.rm = T)) %>%
+  filter(str_sub(CVEMUN, 1, 2) == estadoIdToAnalisis)
 
+View(spr_final_prueba_muns)
 
 
 ### Comprobar los x11 generados y las fuentes. 
@@ -260,8 +266,13 @@ write_csv(spr_final,
 cnbv_input_ <- read_csv("../data/cnbv/processed" %>% file.path(
       "municipios_select_x11.csv")) %>% 
   gather("fecha", "cnbv_x11", starts_with("20"), convert = TRUE) %>% 
-  spread(banco, cnbv_x11, fill = 0) %>% 
-  transmute(CVEMUN = CVEMUN, fecha = fecha, 
+  spread(banco, cnbv_x11, fill = 0) 
+  
+write_csv(cnbv_input_,
+          "../data/cnbv/processed/municipios_select_x11.csv")
+cnbv_input_ <- read_csv("../data/cnbv/processed" %>% file.path(
+    "municipios_select_x11.csv")) %>% 
+    transmute(CVEMUN = CVEMUN, fecha = fecha, 
       todos_x11 = valor, 
       otros_x11 = otros, 
       suma_x11  = bancomer + banamex + otros,
@@ -323,7 +334,9 @@ estados_input <- cnbv_input %>%
 write_csv(estados_input, 
   "../data/cnbv/processed/estados_x11_input.csv")
   
-  
+muns_estado_seleccionado_input <- cnbv_input %>% filter(CVEMUN %>% str_sub(1, 2) == estadoIdToAnalisis)
+write_csv(muns_estado_seleccionado_input, 
+          "../data/cnbv/processed/estado_seleccionado_x11_input.csv")
   
   
   

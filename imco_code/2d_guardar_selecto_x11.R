@@ -58,7 +58,18 @@ write_csv(metros_selecto,
   "../data/cnbv/processed/x11_selecto_zonas_metro_martes.csv")
   
 
+muns_selecto <- muns_selecto %>% filter(
+  (CVEMUN %>% str_sub(0,2)) == "14"
+) %>%
+  group_by(trimestre, CVEMUN) %>% 
+  summarize(atm_selecto = sum(selecto_x11), 
+            predictor_x11 = max(predictor_x11))
+  
 
+
+
+write_csv(muns_selecto, 
+          "../data/cnbv/processed/x11_selecto_estado_seleccionado.csv")
 
 
 

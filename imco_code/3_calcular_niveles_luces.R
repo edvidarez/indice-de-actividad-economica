@@ -10,15 +10,15 @@ filter <- dplyr::filter
 # USAR_REFERENCIA para utilizar el dato original.
 usar_referencia <- TRUE
 
-pibe_14 <- read_csv("../data/bie/processed/pibe.csv") %>% 
-  filter(año == "2014-12-01")
+pibe_ <- read_csv("../data/bie/processed/pibe.csv") %>% 
+  filter(año == year_pib)
 
 if (usar_referencia) {
   muns_acteco <- read_csv("../data/referencias/mun_luces_175.csv",
         col_types = "ccdddddd") %>% 
     mutate(CVEENT = CVEMUN %>% str_sub(1, 2)) %>% 
     left_join(by="CVEENT", 
-        pibe_14 %>% select(CVEENT, Estado, pibe)) %>% 
+        pibe_ %>% select(CVEENT, Estado, pibe)) %>% 
     group_by(CVEENT, Estado) %>% 
     mutate(ae_175 = pibe*x175_loc/sum(x175_loc)) %>%
     ungroup 
@@ -27,7 +27,7 @@ if (usar_referencia) {
         col_types = "ccdddd") %>% 
     mutate(CVEENT = CVEMUN %>% str_sub(1, 2)) %>% 
     left_join(by="CVEENT", 
-        pibe_14 %>% select(CVEENT, Estado, pibe)) %>% 
+        pibe_ %>% select(CVEENT, Estado, pibe)) %>% 
     group_by(CVEENT, Estado) %>% 
     mutate(ae_175 = pibe*x175_loc/sum(x175_loc)) %>%
     ungroup 
@@ -91,9 +91,16 @@ acteco_metro <- muns_acteco %>% select(-CVEENT, -Estado) %>%
 write_csv(acteco_metro, 
   "../data/resultados/acteco/por_zonas_metro.csv")
 
+acteco_estado_seleccionado <- muns_acteco %>% select(-CVEENT, -Estado) %>%
+  filter(CVEMUN %>% str_sub(0,2) == estadoIdToAnalisis) %>%
+  mutate(
+    CVEENT = estadoIdToAnalisis,
+    CVEMET = CVEMUN,
+    zona_metro = nombre
+  ) %>% .[c("CVEENT","CVEMET","zona_metro","ae_175","area","area_loc")]
 
-
-
+write_csv(acteco_estado_seleccionado, 
+          "../data/resultados/acteco/por_municipios_acteco_estado_seleccionado.csv")
 
 
 
