@@ -18,8 +18,9 @@ source('1_guardar_pibe_itaee.R')
 estadoIdToAnalisis <- "14"
 source('2a_limpiar_cnbv_x11.R')
 
-#Aqui hay una variable de entrena filtro
+
 source('2c_selecciona_serie_magda.R')
+
 
 #importa_tabla <- TRUE
 source('2d_guardar_selecto_x11.R')

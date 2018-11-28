@@ -6,8 +6,8 @@ dir_cnbv <- "../data/cnbv"
 
 # posible diferencia por:  
 #   empieza <- "2011-03-01"
-empieza <- "2011-03-01" %>% as.Date
-termina <- "2018-09-01" %>% as.Date
+empieza <- cnbv_first_month %>% as.Date
+termina <- cnbv_last_month %>% as.Date
 
 
 # archivo, pestaña, output, bancos = NULL

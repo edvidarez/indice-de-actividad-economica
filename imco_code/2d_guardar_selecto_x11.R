@@ -38,7 +38,7 @@ gg_selecto <- estados_selecto %>%
   facet_wrap(~CVEENT, scales = "free_y") +
   geom_line()
 
-
+print(gg_selecto)
 
 write_csv(estados_selecto, 
   "../data/cnbv/processed/x11_selecto_estados_martes.csv")
@@ -59,7 +59,7 @@ write_csv(metros_selecto,
   
 
 muns_selecto <- muns_selecto %>% filter(
-  (CVEMUN %>% str_sub(0,2)) == "14"
+  (CVEMUN %>% str_sub(0,2)) == estadoIdToAnalisis
 ) %>%
   group_by(trimestre, CVEMUN) %>% 
   summarize(atm_selecto = sum(selecto_x11), 

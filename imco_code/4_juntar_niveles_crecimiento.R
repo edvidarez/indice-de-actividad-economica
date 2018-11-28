@@ -2,7 +2,7 @@
 # CDMX, a 16 de diciembre de 2016. 
 
   
-  
+filter <- dplyr::filter
 aplicar_crecimiento <- function(base, crec, columnas) {
   # base <- metros_0; crec <- metros_crec; 
   # columnas <- c("CVEENT", "CVEMET", "zona_metro")
@@ -105,7 +105,7 @@ cols_crec <- c( "CVEENT","CVEMET")
 
 muns_eco <- left_join(muns_0, muns_crec, 
                         by = cols_crec) %>% 
-  filter(!is.na(trimestre)) %>%
+  dplyr::filter(!is.na(trimestre)) %>%
   group_by_(.dots = cols_crec) %>% 
   arrange_(.dots = cols_crec %>% c("trimestre"))
 muns_eco_filtered <- muns_eco %>% filter(trimestre == year_pib)
@@ -180,62 +180,6 @@ ggsave(plot = gg_estados,
   "../visualization/figures/estados_x11_selecto_v2.eps", 
   width = 16, height = 9, dpi = 100)
 
-edo_sel_0 <- read_csv("../data/bie/processed/pibe.csv") %>% 
-  filter(año == year_pib) %>% rename(ae_175 = pibe)
-#
-edo_sel_crec <- read_csv("../data/resultados/crecimiento" %>% file.path(
-  "selecto_estado_estado_seleccionado.csv")) %>% 
-  rename(CVEMUN = Estado )
-
-edo_sel_eco <- aplicar_crecimiento(edo_sel_0, edo_sel_crec, 
-                               c("CVEENT", "Estado"))
-
-
-
-
-write_csv(edo_sel_eco, 
-          "../data/resultados/integrado/selecto_estado.csv")
-
-
-gg_estados <- edo_sel_eco %>% 
-  rename(magda = acteco) %>% 
-  gather("indice", "valor", itaee, magda, factor_key = TRUE) %>% 
-  group_by(Estado, indice) %>% 
-  mutate(valor_ = valor/mean(valor, na.rm=TRUE), 
-         trimestre = trimestre + months(2)) %>% 
-  ggplot(aes(trimestre, valor_)) +
-  facet_wrap(~ Estado, nrow = 5) +
-  geom_line(aes(color = indice)) + 
-  scale_x_date("") + 
-  scale_y_continuous("") +
-  scale_color_brewer(palette = "Dark2") + 
-  theme(legend.position = c(5/7, 1/7), 
-        axis.text.x = element_text(angle=45, hjust=1))
-print(gg_estados)
-
-ggsave(plot = gg_estados, 
-       "../visualization/figures/estados_x11_selecto_v2.eps", 
-       width = 16, height = 9, dpi = 100)
-
-gg_muns <- muns_eco %>% 
-  rename(magda = acteco) %>% 
-  gather( "valor", magda, factor_key = TRUE) %>% 
-  group_by(Estado, indice) %>% 
-  mutate(valor_ = valor/mean(valor, na.rm=TRUE), 
-         trimestre = trimestre + months(2)) %>% 
-  ggplot(aes(trimestre, valor_)) +
-  facet_wrap(~ Estado, nrow = 5) +
-  geom_line(aes(color = indice)) + 
-  scale_x_date("") + 
-  scale_y_continuous("") +
-  scale_color_brewer(palette = "Dark2") + 
-  theme(legend.position = c(5/7, 1/7), 
-        axis.text.x = element_text(angle=45, hjust=1))
-print(gg_estados)
-
-ggsave(plot = gg_estados, 
-       "../visualization/figures/estados_x11_selecto_v2.eps", 
-       width = 16, height = 9, dpi = 100)
 
 ### Esta gráfica es para las zonas metros ###
 # Hay que modificarla porque ahorita no jala bien. 

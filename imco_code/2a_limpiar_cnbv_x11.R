@@ -139,7 +139,7 @@ if (entrena_filtro) {
 # También distinguir las que se suman y se multiplican.
 
 fechas <- spr_src$fecha %>% unique() %>% extract(1:n_fechas)
-fechas <- fechas[1:67]  # para 2016-10
+#fechas <- fechas[1:67]  # para 2016-10
 
 trend_ <- lapply(l1[!is.err], trend) %>%
   {do.call(cbind, .)} %>%
@@ -338,6 +338,7 @@ muns_estado_seleccionado_input <- cnbv_input %>% filter(CVEMUN %>% str_sub(1, 2)
 write_csv(muns_estado_seleccionado_input, 
           "../data/cnbv/processed/estado_seleccionado_x11_input.csv")
   
+View(muns_estado_seleccionado_input)
   
   
   
