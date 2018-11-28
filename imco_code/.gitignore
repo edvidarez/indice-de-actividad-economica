@@ -13,3 +13,5 @@ qgis_viirs_marcogeo.qgs~
 5_comprobar_porcnetajes.R
 
 *temp*
+packrat/lib*/
+packrat/src/

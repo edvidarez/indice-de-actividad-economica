@@ -10,3 +10,6 @@ suppressMessages(library(magrittr))
 
 filter   <- dplyr::filter
 contains <- dplyr::contains
+#### -- Packrat Autoloader (version 0.4.9-3) -- ####
+source("packrat/init.R")
+#### -- End Packrat Autoloader -- ####
