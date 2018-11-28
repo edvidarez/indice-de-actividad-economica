@@ -1,5 +1,5 @@
 PackratFormat: 1.4
-PackratVersion: 0.4.9.3
+PackratVersion: 0.5.0
 RVersion: 3.5.1
 Repos: CRAN=https://cran.rstudio.com/
 
@@ -54,7 +54,7 @@ Requires: backports, dplyr, nlme, purrr, reshape2, stringr, tibble,
 Package: cellranger
 Source: CRAN
 Version: 1.1.0
-Hash: 4e1ef4d099b0c5fd531a3938cf4624bd
+Hash: be9d203e7849f73818b36f93e9273c2c
 Requires: rematch, tibble
 
 Package: cli
@@ -147,7 +147,7 @@ Hash: ecf589b42cd284b03a4beb9665482d3e
 Package: lattice
 Source: CRAN
 Version: 0.20-35
-Hash: 26b9d7f0d0cb4e1d1bbb97f867c82d89
+Hash: 4cf72973da5480d40d5ee94d93eebb9c
 
 Package: lazyeval
 Source: CRAN
@@ -157,7 +157,7 @@ Hash: 88926ad9c43581fd0822a37c8ed09f05
 Package: lubridate
 Source: CRAN
 Version: 1.7.4
-Hash: 4a1a31b2e8377b4ba20e117d4a1b8b72
+Hash: 3550629bf2f4a4987338fa59f6f47bee
 Requires: Rcpp, stringr
 
 Package: magrittr
@@ -174,7 +174,7 @@ Requires: Matrix, nlme
 Package: munsell
 Source: CRAN
 Version: 0.5.0
-Hash: 247d1c1d72f3072563912ef860758624
+Hash: 38d0efee9bb99bef143bde41c4ce715c
 Requires: colorspace
 
 Package: nlme
@@ -207,7 +207,7 @@ Hash: 81a8008a5e7858552503935f1abe48aa
 Package: plyr
 Source: CRAN
 Version: 1.8.4
-Hash: 05d65ee369a267f0d0c56604000c69b5
+Hash: 955a61e66001e7df410eea81969a8486
 Requires: Rcpp
 
 Package: purrr
@@ -219,7 +219,7 @@ Requires: magrittr, rlang, tibble
 Package: readr
 Source: CRAN
 Version: 1.2.1
-Hash: 61195cce9bc923473e4175a18c4a0e60
+Hash: c8c735c0c6e6a0e10d868039daee7eab
 Requires: BH, R6, Rcpp, clipr, hms, tibble
 
 Package: readxl
@@ -329,5 +329,5 @@ Hash: b1a321180a793b7968ea8bc667fef06d
 Package: zoo
 Source: CRAN
 Version: 1.8-4
-Hash: 3edc81171d764bf644cfeb4bd0b77040
+Hash: 9cab6bfac22671b8cbdecbb94585f07c
 Requires: lattice
